@@ -1,0 +1,11 @@
+variable "ACCTID" {}
+variable "TAG_MANAGED" {}
+variable "InstanceType" {}
+variable "InstanceKeypairName" {}
+variable "InstanceSubnetID" {}
+variable "InstancePriIP" {}
+variable "InstanceSGID" {}
+variable "InstancePubIPExists" {}
+variable "InstanceTagName" {}
+variable "RootVolumeType" {}
+variable "RootVolumeSize" {}

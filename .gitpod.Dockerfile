@@ -12,4 +12,4 @@ RUN wget "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -O ~/awscliv
     && tfenv install latest \
     && tfenv use latest \
     && tfenv list \
-    && terraform --version \
+    && terraform --version
