@@ -2,8 +2,7 @@
 
 ## 1. terraform実行
 実行するterraformテンプレート配下へ移動  
-
-(実行例)
+(実行コマンド)
 ```bash
 cd ./lab-practice-01/aws-createVpc; ls
 ```
@@ -13,7 +12,8 @@ main.tf
 ```
 ### 1.1. 初期化
 
-以下コマンドでterraformを初期化する
+terraformを初期化する  
+(実行コマンド)
 ```bash
 terraform init
 ```
@@ -28,8 +28,8 @@ If you ever set or change modules or backend configuration for Terraform,
 rerun this command to reinitialize your working directory. If you forget, other
 commands will detect it and remind you to do so if necessary.
 ```
-### 1.2. デバッグ
-下記コマンドを実行
+### 1.2. デバッグ  
+(実行コマンド)
 ```bash
 terraform plan
 ```
@@ -69,8 +69,8 @@ Plan: 1 to add, 0 to change, 0 to destroy.
 
 Note: You didn't use the -out option to save this plan, so Terraform can't guarantee to take exactly these actions if you run "terraform apply" now.
 ```
-### 1.3. 適用
-下記コマンドを実行
+### 1.3. 適用  
+(実行コマンド)
 ```bash
 terraform apply
 ```
@@ -122,8 +122,10 @@ Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 ```
 デプロイした際のリソースの変数は、terraform.tfstateに記録される  
 ※```terraform apply```時にエラーが出力された場合、該当のtfファイルを編集し、terraform.tfstateを削除orリネームした上で再度、```terraform init```から実施すること
+
 ### 1.4. 切り戻し
-削除したいAWSリソースの内容を確認する
+削除したいAWSリソースの内容を確認する  
+(実行コマンド)
 ```bash
 terraform plan -destroy
 ```
@@ -165,7 +167,8 @@ Plan: 0 to add, 0 to change, 1 to destroy.
 
 Note: You didn't use the -out option to save this plan, so Terraform can't guarantee to take exactly these actions if you run "terraform apply" now.
 ```
-AWSリソースの削除
+AWSリソースの削除  
+(実行コマンド)
 ```bash
 terraform destroy
 ```
