@@ -61,82 +61,9 @@ secret_key     ****************o/SK shared-credentials-file
     region           ap-northeast-1      config-file    ~/.aws/config
 ```
 ※terraform適用先リージョンを修正する場合、~/.aws/configファイルを編集する
+
 ## 1. terraform実行
+
 実行したいterraformテンプレート配下へ移動  
-
-(実行例)
-```bash
-cd ./
-```
-### 1.1. 初期化
-
-以下コマンドでterraformを初期化する
-```bash
-terraform init
-```
-下記が出力されればok  
-```bash
-...(中略)
-Terraform has been successfully initialized!
-
-You may now begin working with Terraform. Try running "terraform plan" to see
-any changes that are required for your infrastructure. All Terraform commands
-should now work.
-
-If you ever set or change modules or backend configuration for Terraform,
-rerun this command to reinitialize your working directory. If you forget, other
-commands will detect it and remind you to do so if necessary.
-```
-### 1.2. デバッグ
-
-下記コマンドを実行
-```bash
-terraform plan -var-file=vars.tfvars
-```
-
-下記が出力されればok 
-```bash
-...(中略)
-Plan: 2 to add, 0 to change, 0 to destroy.
-
-─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-
-Note: You didn't use the -out option to save this plan, so Terraform can't guarantee to take exactly these actions if you run "terraform apply" now.
-```
-### 1.3. 適用
-
-下記コマンドを実行
-```bash
-terraform apply -var-file=vars.tfvars
-```
-下記が出力される
-```bash
-...(中略)
-Plan: 2 to add, 0 to change, 0 to destroy.
-
-Do you want to perform these actions?
-  Terraform will perform the actions described above.
-  Only 'yes' will be accepted to approve.
-
-  Enter a value:
-```
-```yes```と入力してエンター押す  
-問題なくデプロイ完了すると下記が出力される  
-```bash
-...(中略)
-Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
-```
-デプロイした際のリソースの変数は、terraform.tfstateに記録される  
-※```terraform apply```時にエラーが出力された場合、該当のtfファイルを編集し、terraform.tfstateを削除orリネームした上で再度、```terraform init```から実施すること
-
-### 1.4. 切り戻し
-
-削除したいAWSリソースの内容を確認する
-```bash
-terraform plan -destroy
-```
-AWSリソースの削除
-```bash
-terraform destroy
-```
+- [createVPC](https://github.com/TIwase/labs-terraform/tree/main/lab-practice-01/aws-createVpc)
 
