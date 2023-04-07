@@ -32,10 +32,17 @@ terraformのバージョン確認
 terraform --version
 ```
 ### 0.3. クラウドのCredentials設定
-- awsの場合  
+- aws SSOの場合  
 
 SSOポータルサイトにサインインし、対象AWSアカウントの[Command line or programmatic access]を選択  
 [Option 2: Add a profile to your AWS credentials file]に記載されている値をクリック(コピー)する  
+
+- aws IAMの場合  
+AWSマネジメントコンソールにサインイン後、一番右上の[IAMユーザ名@アカウント名]をクリックし、[Security credentials]を選択  
+[Access keys] > [Create access key]をクリックし、[Command Line Interface (CLI)]を選択してアクセスキーを作成する  
+アクセスキーとシークレットキーが表示されるので控えておく (csv形式でダウンロード可能)
+
+
 以下コマンドを実行して、コピーした値をペーストする
 ```bash
 vi ~/.aws/credentials
