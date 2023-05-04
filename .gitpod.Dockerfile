@@ -6,7 +6,7 @@ RUN wget "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -O ~/awscliv
     && sudo ~/aws/install \
     && mkdir -p ~/.aws \
     && echo "[default]" >> ~/.aws/config && echo "region = ap-northeast-1" >> ~/.aws/config && echo "output = json" >>  ~/.aws/config && echo "cli_pager=" >> ~/.aws/config \
-    && echo "TF_PLUGIN_CACHE_DIR=~/.terraform.d/plugin-cache" >> ~/.bashrc \
+    && echo "export TF_PLUGIN_CACHE_DIR=\"$HOME/.terraform.d/plugin-cache\"" >> ~/.bashrc \
     && mkdir -p ~/.terraform.d/plugin-cache \
     && git clone https://github.com/tfutils/tfenv.git ~/.tfenv \
     && sudo ln -s ~/.tfenv/bin/* /usr/local/bin/ \
