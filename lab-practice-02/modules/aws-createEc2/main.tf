@@ -37,7 +37,7 @@ data "aws_key_pair" "selected" {
 ### Run EC2 Instance
 resource "aws_instance" "demo" {
   ami                    = data.aws_ssm_parameter.amzn2_ami.value
-  instance_type          = var.InstanceType
+  instance_type          = var.instance_type
   key_name               = data.aws_key_pair.selected.key_name
   subnet_id              = data.aws_subnet.selected.id
   vpc_security_group_ids = data.aws_security_groups.selected.ids
@@ -46,14 +46,14 @@ resource "aws_instance" "demo" {
   #   device_index         = 0
   # }
   root_block_device {
-    volume_type          = var.RootVolumeType
-    volume_size          = var.RootVolumeSize
+    volume_type          = var.root_volume_type
+    volume_size          = var.root_volume_size
   }
 
   instance_initiated_shutdown_behavior = "terminate"
   tags = {
-    Name                 = var.InstanceTagName
-    Managed              = var.TAG_MANAGED
+    Name                 = var.instance_name_tag
+    Managed              = "tf-managed"
   }
   # depends_on = [
   #   aws_network_interface.primary_eni

@@ -1,9 +1,9 @@
 
-# 作成したキーペアを格納するファイルを指定。
-# 存在しないディレクトリを指定した場合は新規にディレクトリを作成してくれる
+# 作成したキーペアを格納するファイルを指定
+# 存在しないディレクトリを指定した場合は新規にディレクトリを作成
 locals {
-  public_key_file  = "./.key_pair/${var.key_name}.id_rsa.pub"
-  private_key_file = "./.key_pair/${var.key_name}.id_rsa"
+  public_key_file  = "./.key_pair/${var.keypair_name}.id_rsa.pub"
+  private_key_file = "./.key_pair/${var.keypair_name}.id_rsa"
 }
 
 # privateキーのアルゴリズム設定
@@ -38,12 +38,12 @@ resource "local_file" "public_key_openssh" {
 
 # AWSのキーペアに公開鍵を登録
 resource "aws_key_pair" "key_pair" {
-  key_name   = var.key_name
+  key_name   = var.keypair_name
   public_key = tls_private_key.keygen.public_key_openssh
   depends_on = [ 
     tls_private_key.keygen 
   ]
   tags = {
-    Managed = var.TAG_MANAGED
+    Managed = "tf-managed"
   }
 }

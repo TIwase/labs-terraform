@@ -72,5 +72,5 @@ secret_key     ****************o/SK shared-credentials-file
 ## 1. terraform実行
 
 実行したいterraformテンプレート配下へ移動  
-- [createVPC](https://github.com/TIwase/labs-terraform/tree/main/lab-practice-01/aws-createVpc)
-
+- [createVPC](./lab-practice-01/aws-createVpc/)
+- [createEc2](./lab-practice-02/)
