@@ -9,11 +9,11 @@
 
 ## terraform構成
 
-|Module|Description|
-|--|--|
-|[aws-createVpcs](./modules/aws-createVpcs/)|VPC/Subnet/SG作成|
-|[aws-createKeyPair](./modules/aws-createKeyPair/)|キーペア作成|
-|[aws-createEc2](./modules/aws-createEc2/)|EC2作成|
+|Directory|Module|Description|
+|--|--|--|
+|[aws-createVpcs](./modules/aws-createVpcs/)|module.create_vpcs|VPC/Subnet/SG作成|
+|[aws-createKeyPair](./modules/aws-createKeyPair/)|module.create_keypair|キーペア作成|
+|[aws-createEc2](./modules/aws-createEc2/)|module.create_instance|EC2作成|
 
 
 ## 1. terraform実行
