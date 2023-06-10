@@ -1,4 +1,12 @@
 # terraformテスト環境利用方法
+
+[terraformテスト環境利用方法](#terraformテスト環境利用方法)  
+- [0. gitpod起動](#0-gitpod起動)  
+  - [0.1. terraformのインストール](#01-terraformのインストール)  
+  - [0.2. terraformのバージョンを指定する場合](#02-terraformのバージョンを指定する場合)   
+  - [0.3. クラウドのCredentials設定](#03-クラウドのcredentials設定)
+- [1. terraform実行](#1-terraform実行)
+
 ## 0. gitpod起動
 ### 0.1. terraformのインストール
 以下のURLにアクセスする
@@ -47,12 +55,46 @@ AWSマネジメントコンソールにサインイン後、一番右上の[IAM�
 ```bash
 vi ~/.aws/credentials
 ```
-(記載例)
+(IAM記載例)
+```bash
+[default]
+aws_access_key_id=ASIAxxxx
+aws_secret_access_key=xxxxxx
+```
+※複数AWSアカウントのリソースデプロイする場合は、Configファイルに下記プロファイルを追記すること
+```bash
+vi ~/.aws/config
+```
+```bash
+[default]
+region=ap-northeast-1
+output=json
+cli_pager=
+
+# 複数AWSアカウントのリソースデプロイする場合は下記プロファイルを追記
+[profile iwt-member-acct]
+source_profile=default
+role_arn=arn:aws:iam::xxxxxxxxxxxx:role/iwt-member-acct-switchrole # クロスアカウント用IAM Roleのarnを追記
+role_session_name=session_iwt-member-acct # 任意の名前
+```
+
+(SSO記載例)  
+以下コマンドを実行して、コピーした値をペーストする
+```bash
+vi ~/.aws/credentials
+```
 ```bash
 [default]
 aws_access_key_id=ASIAxxxx
 aws_secret_access_key=xxxxxx
 aws_session_token=xxxxxxxxxxxx
+
+# 複数AWSアカウントに対してリソースデプロイする場合は下記プロファイルを追記
+[profile iwt-member-acct]
+aws_access_key_id=ASIAxxxx
+aws_secret_access_key=xxxxxx
+aws_session_token=xxxxxxxxxxxx
+
 ```
 以下コマンド実行で登録したCredentialsの確認
 ```bash
