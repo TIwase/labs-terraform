@@ -1,6 +1,7 @@
 # VPCフローログ設定手順
 
 [VPCフローログ設定手順](#vpcフローログ設定手順)  
+- [terraform構成](#terraform構成)
 - [1. 事前準備](#1-事前準備)  
   - [1.1. 前提条件](#11-前提条件)  
   - [1.2. クロスアカウントアクセス用IAMロール(スイッチロール)の作成](#12-クロスアカウントアクセス用iamロールスイッチロールの作成)   
@@ -9,6 +10,15 @@
   - [2.1. 初期化](#21-初期化)
   - [2.2. リソース一括デプロイする場合](#22-リソース一括デプロイする場合)
   - [2.3. リソース単体のデプロイをする場合](#23-リソース単体のデプロイをする場合)
+
+
+## terraform構成
+
+|Directory|Module|Description|
+|--|--|--|
+|[createS3bucket](./modules/createS3bucket/)|module.create_bucket|S3バケット及びバケットポリシー作成|
+|[createVpc](./modules/createVpc/)|module.create_vpcs|VPC CIDR作成及びVPCフローログ設定|
+
 
 ## 1. 事前準備
 ### 1.1. 前提条件
@@ -393,3 +403,4 @@ Apply complete! Resources: 3 added, 0 changed, 0 destroyed.
 - [Appendix E: Deploy a Cross-Account IAM role in AWS Member Accounts](https://docs.aws.amazon.com/ja_jp/solutions/latest/aws-trusted-advisor-explorer/appendix-e.html)
 - [Cross Account Role CloudFormation Scripts](https://github.com/spohnan/cf-cross-account-role)
 - [Data Source: aws_iam_policy_document](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document)
+- [Providers Within Modules](https://developer.hashicorp.com/terraform/language/modules/develop/providers)
