@@ -1,0 +1,38 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "Create PowerUserAccess IAM Role for Assume Role"
+Parameters:
+  SourceAccountId:
+    Type: 'String'
+    Description: AWS Account ID of the source account.
+    MaxLength: 12
+    MinLength: 12
+
+  CrossAccountRoleName:
+    Type: 'String'
+    Description: IAM Role Name of accessing another account from the source account.
+    Default: 'PowerUserAccessRoleForCrossAcct'
+
+Resources:
+
+  IAMRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              AWS:
+                - !Join [ "", [ "arn:aws:iam::", !Ref SourceAccountId, ":root" ] ]
+            Action:
+              - "sts:AssumeRole"
+            Condition: {
+              # Bool:
+              #   aws:MultiFactorAuthPresent: "true"
+            }
+      RoleName: !Ref CrossAccountRoleName
+      Tags:
+        - Key: 'Managed' 
+          Value: 'tf-managed'
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/PowerUserAccess"
