@@ -114,5 +114,6 @@ secret_key     ****************o/SK shared-credentials-file
 ## 1. terraform実行
 
 実行したいterraformテンプレート配下へ移動  
-- [createVPC](./lab-practice-01/aws-createVpc/)
-- [createEc2](./lab-practice-02/)
+- [create VPC](./lab-practice-01/aws-createVpc/)
+- [create EC2 Instance](./lab-practice-02/)
+- [export VPC flow log to S3 bucket in another account](./lab-practice-03/)
