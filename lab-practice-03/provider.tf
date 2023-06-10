@@ -3,7 +3,7 @@ terraform {
     aws = {
       source  = "hashicorp/aws"
       version = "= 4.65.0"
-      configuration_aliases = [ aws.src, aws.dst ]
+      configuration_aliases = [ aws.src_acct, aws.dest_acct ]
     }
   }
 }
