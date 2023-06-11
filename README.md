@@ -90,7 +90,7 @@ aws_secret_access_key=xxxxxx
 aws_session_token=xxxxxxxxxxxx
 
 # 複数AWSアカウントに対してリソースデプロイする場合は下記プロファイルを追記
-[profile iwt-member-acct]
+[iwt-member-acct]
 aws_access_key_id=ASIAxxxx
 aws_secret_access_key=xxxxxx
 aws_session_token=xxxxxxxxxxxx
