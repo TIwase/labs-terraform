@@ -31,7 +31,7 @@
 - 「スタック」>「スタックの作成」>「新しいリソースを使用(標準)」を選択
 - 「テンプレートの準備完了」と「テンプレートファイルのアップロード」のラジオボタンがチェックされていることを確認し、[SwitchRoleWithPowerUser.yml](./SwitchRoleWithPowerUser.yml)を選択して、「次へ」を選択 
 
-- スタック名に任意の名前を入力し、SourceAccountId変数にアクセス元アカウントIDを入力して「次へ」を選択  
+- スタック名に任意の名前を入力し、CrossAccountRoleName変数に任意の文字列、SourceAccountId変数にアクセス元アカウントIDを入力して「次へ」を選択  
 
 (スタック名の例)
 ```
