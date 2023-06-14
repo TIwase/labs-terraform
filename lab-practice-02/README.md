@@ -132,6 +132,8 @@ Apply complete! Resources: 8 added, 0 changed, 0 destroyed.
 ### 1.3. リソース単体のデプロイをする場合
 1.3.1. デバッグ  
 単一のモジュールを実行する  
+  
+※module.create_instance単体のデプロイをする場合、main.tfのdepends_on行をコメントアウトすること  
 
 (実行コマンド)
 ```bash
