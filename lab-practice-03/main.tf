@@ -14,7 +14,7 @@ module "create_vpcs" {
   vpc_cidr          = var.vpc_cidr_str
   vpc_name          = var.vpc_name_str
   bucket_name       = var.bucket_name_str
-  depends_on        = [ module.create_bucket ]
+  depends_on        = [ module.create_bucket ] # module単体での実行の場合、本行をコメントアウトすること
   providers = {
     aws.dest_acct = aws.master
     aws.src_acct  = aws.member
