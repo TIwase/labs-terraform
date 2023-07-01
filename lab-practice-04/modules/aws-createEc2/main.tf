@@ -25,7 +25,7 @@ data "aws_key_pair" "selected" {
 }
 
 data "template_file" "user_data" {
-  template = "${file("user_data.tpl")}"
+  template = "${file("./modules/aws-createEc2/user_data.tpl")}"
 }
 ### Run EC2 Instance
 resource "aws_instance" "demo" {
