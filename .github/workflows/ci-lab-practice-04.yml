@@ -29,6 +29,7 @@ jobs:
       uses: hashicorp/setup-terraform@v1
 
     - name: Terraform Format
+      working-directory: ./lab-practice-04
       run: terraform fmt -recursive -check
 
     - name: Terraform Plan
