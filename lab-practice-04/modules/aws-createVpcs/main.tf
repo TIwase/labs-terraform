@@ -55,3 +55,4 @@ resource "aws_security_group" "allow_traffic" {
     Managed = "tf-managed"
   }
 }
+

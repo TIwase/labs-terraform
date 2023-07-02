@@ -19,6 +19,6 @@ module "create_instance" {
   instance_type     = "t2.micro"
   root_volume_type  = "gp2"
   root_volume_size  = 10
-  instance_name_tag = "labtest-username-02"
+  instance_name_tag = "labtest-username-01"
   depends_on = [ module.create_vpcs ] # module単体での実行の場合、本行をコメントアウトすること
 }

@@ -20,7 +20,7 @@
 実行するterraformテンプレート配下へ移動  
 (実行コマンド)
 ```bash
-cd ./lab-practice-02; ls
+cd ./lab-practice-04; ls
 ```
 下記が出力されることを確認
 ```
