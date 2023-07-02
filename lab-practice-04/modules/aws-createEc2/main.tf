@@ -34,7 +34,7 @@ resource "aws_instance" "demo" {
   key_name               = data.aws_key_pair.selected.key_name
   subnet_id              = data.aws_subnet.selected.id
   vpc_security_group_ids = data.aws_security_groups.selected.ids
-  # user_data              = data.template_file.user_data.rendered
+  user_data              = data.template_file.user_data.rendered
 
   root_block_device {
     volume_type          = var.root_volume_type
