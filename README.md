@@ -45,11 +45,29 @@ terraform --version
 SSOポータルサイトにサインインし、対象AWSアカウントの[Command line or programmatic access]を選択  
 [Option 2: Add a profile to your AWS credentials file]に記載されている値をクリック(コピー)する  
 
+以下コマンドを実行して、コピーした値をペーストする
+```bash
+vi ~/.aws/credentials
+```
+(SSO記載例)  
+```bash
+[default]
+aws_access_key_id=ASIAxxxx
+aws_secret_access_key=xxxxxx
+aws_session_token=xxxxxxxxxxxx
+
+# 複数AWSアカウントに対してリソースデプロイする場合は下記プロファイルを追記
+[iwt-member-acct]
+aws_access_key_id=ASIAxxxx
+aws_secret_access_key=xxxxxx
+aws_session_token=xxxxxxxxxxxx
+
+```
+
 - aws IAMの場合  
 AWSマネジメントコンソールにサインイン後、一番右上の[IAMユーザ名@アカウント名]をクリックし、[Security credentials]を選択  
 [Access keys] > [Create access key]をクリックし、[Command Line Interface (CLI)]を選択してアクセスキーを作成する  
 アクセスキーとシークレットキーが表示されるので控えておく (csv形式でダウンロード可能)
-
 
 以下コマンドを実行して、コピーした値をペーストする
 ```bash
@@ -78,24 +96,8 @@ role_arn=arn:aws:iam::xxxxxxxxxxxx:role/iwt-member-acct-switchrole # クロス�
 role_session_name=session_iwt-member-acct # 任意の名前
 ```
 
-(SSO記載例)  
-以下コマンドを実行して、コピーした値をペーストする
-```bash
-vi ~/.aws/credentials
-```
-```bash
-[default]
-aws_access_key_id=ASIAxxxx
-aws_secret_access_key=xxxxxx
-aws_session_token=xxxxxxxxxxxx
+### 0.4. 設定したCredentialsの確認
 
-# 複数AWSアカウントに対してリソースデプロイする場合は下記プロファイルを追記
-[iwt-member-acct]
-aws_access_key_id=ASIAxxxx
-aws_secret_access_key=xxxxxx
-aws_session_token=xxxxxxxxxxxx
-
-```
 以下コマンド実行で登録したCredentialsの確認
 ```bash
 aws configure list
@@ -117,3 +119,4 @@ secret_key     ****************o/SK shared-credentials-file
 - [create VPC](./lab-practice-01/aws-createVpc/)
 - [create EC2 Instance](./lab-practice-02/)
 - [export VPC flow log to S3 bucket in another account](./lab-practice-03/)
+- [create EC2 Instance with User Data](./lab-practice-04/)
