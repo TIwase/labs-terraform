@@ -50,7 +50,7 @@ commands will detect it and remind you to do so if necessary.
 
 (実行コマンド)
 ```bash
-terraform plan
+terraform plan -var-file=test.tfvars
 ```
 下記が出力されればok 
 
@@ -71,7 +71,7 @@ Note: You didn't use the -out option to save this plan, so Terraform can't guara
 1.2.2. 適用  
 (実行コマンド)
 ```bash
-terraform apply
+terraform apply -var-file=test.tfvars
 ```
 下記が出力されればok 
 ```
@@ -137,7 +137,7 @@ Apply complete! Resources: 8 added, 0 changed, 0 destroyed.
 
 (実行コマンド)
 ```bash
-terraform plan -target=module.create_vpcs
+terraform plan -target=module.create_vpcs -var-file=test.tfvars
 ```
 下記が出力されればok 
 
@@ -167,7 +167,7 @@ Note: You didn't use the -out option to save this plan, so Terraform can't guara
 1.3.2 適用  
 (実行コマンド)
 ```bash
-terraform apply -target=module.create_vpcs
+terraform apply -target=module.create_vpcs -var-file=test.tfvars
 ```
 下記が出力されればok 
 ```
