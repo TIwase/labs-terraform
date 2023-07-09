@@ -1,3 +1,4 @@
+s3_bucket_name_str="labtest-backend-tfstate"
 vpc_name_tag_str="labtest-vpc-01"
 vpc_cidr_str="172.32.0.0/16"
 subnet_name_tag_str="labtest-subnet-01"

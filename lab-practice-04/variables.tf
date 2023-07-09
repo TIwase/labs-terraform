@@ -1,4 +1,4 @@
-
+variable "s3_bucket_name_str" {}
 variable "vpc_name_tag_str" {}
 variable "vpc_cidr_str" {}
 variable "subnet_name_tag_str" {}
