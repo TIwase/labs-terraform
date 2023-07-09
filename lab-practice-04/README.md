@@ -164,4 +164,8 @@ module.create_vpcs.aws_vpc.test: Creation complete after 2s
 ╵
 
 Apply complete! Resources: 3 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+(以下略...)
 ```

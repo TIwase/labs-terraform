@@ -3,12 +3,14 @@ data "aws_ssm_parameter" "amzn2_ami" {
   name = "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
 }
 # Get subnet ID
-# data "aws_subnet" "selected" {
-#   filter {
-#     name   = "tag:Managed"
-#     values = ["tf-managed"]
-#   }
-# }
+data "terraform_remote_state" "s3" {
+  backend = "s3"
+  config = {
+    bucket = var.bucket_name
+    key    = "./terraform.tfstate"
+    region = "ap-northeast-1"
+  }
+}
 # Get Security Group ID
 # data "aws_security_groups" "selected" {
 #   filter {
@@ -32,8 +34,8 @@ resource "aws_instance" "demo" {
   ami                    = data.aws_ssm_parameter.amzn2_ami.value
   instance_type          = var.instance_type
   key_name               = var.keypair_name
-  # subnet_id              = data.aws_subnet.selected.id
-  subnet_id              = var.subnet_id
+  subnet_id              = data.terraform_remote_state.s3.outputs.vpcs_output_all.subnet_id
+  # subnet_id              = var.subnet_id
   # vpc_security_group_ids = data.aws_security_groups.selected.ids
   vpc_security_group_ids = [ var.sg_id ]
   user_data              = data.template_file.user_data.rendered

@@ -1,7 +1,7 @@
 # Bucket作成
 module "create_bucket" {
   source            = "./modules/aws-createBucket/"
-  bucket_name      = var.s3_bucket_name_str
+  bucket_name       = var.s3_bucket_name_str
 }
 
 # VPC, Subnet, SG作成
@@ -21,6 +21,7 @@ module "create_keypair" {
 # インスタンス作成
 module "create_instance" {
   source            = "./modules/aws-createEc2"
+  bucket_name       = var.s3_bucket_name_str
   instance_type     = var.instance_type_str
   keypair_name      = module.create_keypair.name
   subnet_id         = module.create_vpcs.subnet_id
