@@ -37,7 +37,7 @@ jobs:
       run: |
         terraform init
         terraform validate
-        terraform plan
+        terraform plan -var-file=test.tfvars
 
     # - name: Terraform stg/20-frontend
     #   working-directory: ./providers/aws/environments/stg/20-frontend
