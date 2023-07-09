@@ -24,7 +24,7 @@ module "create_instance" {
   bucket_name       = var.s3_bucket_name_str
   instance_type     = var.instance_type_str
   keypair_name      = module.create_keypair.name
-  subnet_id         = module.create_vpcs.subnet_id
+  # subnet_id         = module.create_vpcs.subnet_id
   sg_id             = module.create_vpcs.sg_id
   root_volume_type  = var.root_volume_type_str
   root_volume_size  = var.root_volume_size_num

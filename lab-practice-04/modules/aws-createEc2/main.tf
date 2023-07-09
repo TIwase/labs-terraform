@@ -34,6 +34,7 @@ resource "aws_instance" "demo" {
   ami                    = data.aws_ssm_parameter.amzn2_ami.value
   instance_type          = var.instance_type
   key_name               = var.keypair_name
+  # key_name               = data.aws_key_pair.selected.key_name
   subnet_id              = data.terraform_remote_state.s3.outputs.vpcs_output_all.subnet_id
   # subnet_id              = var.subnet_id
   # vpc_security_group_ids = data.aws_security_groups.selected.ids
