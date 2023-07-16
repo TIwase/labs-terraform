@@ -10,24 +10,114 @@
 
 |Directory|Module|Description|
 |--|--|--|
-|[aws-createBucket](./modules/aws-createBucket/)|module.create_bucket|S3バケット作成|
 |[aws-createVpcs](./modules/aws-createVpcs/)|module.create_vpcs|VPC/Subnet/SG作成|
 |[aws-createKeyPair](./modules/aws-createKeyPair/)|module.create_keypair|キーペア作成|
 |[aws-createEc2](./modules/aws-createEc2/)|module.create_instance|EC2作成|
 
 
 ## 1. terraform実行
-実行するterraformテンプレート配下へ移動  
+
+### 1.1. S3バケット作成
+- 実行するterraformテンプレート配下へ移動  
+
 (実行コマンド)
 ```bash
-cd ./lab-practice-04; ls
+cd ./lab-practice-04/modules/aws-createBucket; ls
 ```
 下記が出力されることを確認
+```
+main.tf  outputs.tf  variables.tf
+```
+
+- 初期化
+
+terraformを初期化する  
+(実行コマンド)
+```bash
+terraform init
+```
+下記が出力されればok  
+```bash
+...(中略)
+Terraform has been successfully initialized!
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+```
+
+- デバッグ
+
+(実行コマンド)
+```bash
+terraform plan -var=bucket_name="labtest-backend-tfstate"
+```
+
+下記が出力されることを確認
+```
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # aws_s3_bucket.tf_backend will be created
+
+...(中略)
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+Note: You didn't use the -out option to save this plan, so Terraform can't guarantee to take exactly these actions if you run "terraform apply" now.
+```
+
+- 適用
+
+(実行コマンド)
+```bash
+terraform apply -var=bucket_name="labtest-backend-tfstate"
+```
+
+下記が出力される
+
+```
+...(中略)
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: 
+```
+
+yesと入力してエンター押す
+
+```
+  Enter a value: yes
+
+aws_s3_bucket.tf_backend: Creating...
+aws_s3_bucket.tf_backend: Creation complete after 4s [id=labtest-backend-tfstate]
+
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+bucket_arn = "arn:aws:s3:::labtest-backend-tfstate"
+bucket_name = "labtest-backend-tfstate"
+```
+
+### 1.2. 初期化
+
+- 実行するterraformテンプレート(親モジュール)配下へ移動  
+
+(実行コマンド)
+```bash
+cd ../../; ls
+```
+下記が出力されることを確認
+
 ```
 main.tf  modules  output.tf  provider.tf  README.md  test.tfvars  variables.tf
 ```
 
-### 1.1. 初期化
 
 terraformを初期化する  
 (実行コマンド)
@@ -47,11 +137,11 @@ commands will detect it and remind you to do so if necessary.
 ```
 
 
-### 1.2. リソース単体のデプロイを実行
-1.2.1. デバッグ  
+### 1.3. リソース単体のデプロイを実行
+1.3.1. デバッグ  
 単一のモジュールを実行する  
   
-※親モジュールのmain.tfのdepends_on行をコメントアウトすること  
+※create_vpcs, create_keypair, create_instanceの順でterraform applyすること  
 
 (実行コマンド)
 ```bash
@@ -82,7 +172,7 @@ Plan: 3 to add, 0 to change, 0 to destroy.
 Note: You didn't use the -out option to save this plan, so Terraform can't guarantee to take exactly these actions if you run "terraform apply" now.
 ```
 
-1.2.2 適用  
+1.3.2 適用  
 (実行コマンド)
 ```bash
 terraform apply -target=module.create_vpcs -var-file=test.tfvars
@@ -169,3 +259,5 @@ Outputs:
 
 (以下略...)
 ```
+
+続いて、-targetオプションをcreate_keypair, create_instanceに変えて、手順1.3を繰り返し実行する

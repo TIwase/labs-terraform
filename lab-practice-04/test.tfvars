@@ -8,4 +8,4 @@ keypair_name_str="labtest-keypair-01"
 instance_type_str="t2.micro"
 root_volume_type_str="gp2"
 root_volume_size_num=10
-instance_name_tag_str="labtest-username-01"
+instance_name_tag_str="labtest-username-02"
