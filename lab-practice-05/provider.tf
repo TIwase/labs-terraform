@@ -6,7 +6,7 @@ terraform {
     }
   }
   cloud {
-    organization = "lab-practice-04/main.tf"
+    organization = "iwaset-org"
 
     workspaces {
       name = "labs-terraform"

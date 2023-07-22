@@ -18,17 +18,23 @@
 
 ## 1. terraform実行
 
-### 1.1. S3バケット作成
+<!-- ### 1.1. S3バケット作成
 - 実行するterraformテンプレート配下へ移動  
 
 (実行コマンド)
 ```bash
-cd ./lab-practice-04/modules/aws-createBucket; ls
+cd ./lab-practice-05/modules/aws-createBucket; ls
 ```
 下記が出力されることを確認
 ```
 main.tf  outputs.tf  variables.tf
+``` -->
+
+- terraform cloudログイン
+```bash
+terraform login
 ```
+
 
 - 初期化
 
@@ -39,21 +45,42 @@ terraform init
 ```
 下記が出力されればok  
 ```bash
-...(中略)
-Terraform has been successfully initialized!
-You may now begin working with Terraform. Try running "terraform plan" to see
-any changes that are required for your infrastructure. All Terraform commands
-should now work.
-If you ever set or change modules or backend configuration for Terraform,
-rerun this command to reinitialize your working directory. If you forget, other
-commands will detect it and remind you to do so if necessary.
+Initializing Terraform Cloud...
+Initializing modules...
+
+Initializing provider plugins...
+- Finding latest version of hashicorp/local...
+- Finding latest version of hashicorp/tls...
+- Finding hashicorp/aws versions matching "4.65.0"...
+- Finding latest version of hashicorp/template...
+- Installing hashicorp/local v2.4.0...
+- Installed hashicorp/local v2.4.0 (signed by HashiCorp)
+- Installing hashicorp/tls v4.0.4...
+- Installed hashicorp/tls v4.0.4 (signed by HashiCorp)
+- Installing hashicorp/aws v4.65.0...
+- Installed hashicorp/aws v4.65.0 (signed by HashiCorp)
+- Installing hashicorp/template v2.2.0...
+- Installed hashicorp/template v2.2.0 (signed by HashiCorp)
+
+Terraform has created a lock file .terraform.lock.hcl to record the provider
+selections it made above. Include this file in your version control repository
+so that Terraform can guarantee to make the same selections by default when
+you run "terraform init" in the future.
+
+Terraform Cloud has been successfully initialized!
+
+You may now begin working with Terraform Cloud. Try running "terraform plan" to
+see any changes that are required for your infrastructure.
+
+If you ever set or change modules or Terraform Settings, run "terraform init"
+again to reinitialize your working directory.
 ```
 
 - デバッグ
 
 (実行コマンド)
 ```bash
-terraform plan -var=bucket_name="labtest-backend-tfstate"
+terraform plan -target=module.create_vpcs
 ```
 
 下記が出力されることを確認
@@ -63,10 +90,15 @@ Terraform used the selected providers to generate the following execution plan. 
 
 Terraform will perform the following actions:
 
-  # aws_s3_bucket.tf_backend will be created
-
 ...(中略)
-─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ Warning: Resource targeting is in effect
+│ 
+│ You are creating a plan with the -target option, which means that the result of this plan may not represent all of the changes requested by the current configuration.
+│ 
+│ The -target option is not for routine use, and is provided only for exceptional situations such as recovering from errors or mistakes, or when Terraform specifically suggests to use it as part of an error message.
+╵
+
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 
 Note: You didn't use the -out option to save this plan, so Terraform can't guarantee to take exactly these actions if you run "terraform apply" now.
 ```
@@ -75,7 +107,7 @@ Note: You didn't use the -out option to save this plan, so Terraform can't guara
 
 (実行コマンド)
 ```bash
-terraform apply -var=bucket_name="labtest-backend-tfstate"
+terraform apply"
 ```
 
 下記が出力される
