@@ -3,9 +3,10 @@
 [EC2デプロイ手順](#ec2デプロイ手順)  
 - [terraform構成](#terraform構成)  
 - [1. terraform実行](#1-terraform実行)  
-  - [1.1. S3バケット作成](#11-s3バケット作成)  
+  - [1.1. terraform cloudログイン](#11-terraform-cloudログイン)
   - [1.2. 初期化](#12-初期化)
-  - [1.3. リソース単体のデプロイを実行](#13-リソース単体のデプロイを実行)
+  - [1.3. デバッグ](#13-リソース単体のデプロイを実行)
+  - [1.4. 適用](#14-適用)
 
 ## terraform構成
 
@@ -30,13 +31,13 @@ cd ./lab-practice-05/modules/aws-createBucket; ls
 main.tf  outputs.tf  variables.tf
 ``` -->
 
-- terraform cloudログイン
+### 1.1. terraform cloudログイン
 ```bash
 terraform login
 ```
 
 
-- 初期化
+### 1.2. 初期化
 
 terraformを初期化する  
 (実行コマンド)
@@ -76,7 +77,7 @@ If you ever set or change modules or Terraform Settings, run "terraform init"
 again to reinitialize your working directory.
 ```
 
-- デバッグ
+### 1.3. デバッグ
 
 (実行コマンド)
 ```bash
@@ -103,7 +104,7 @@ Terraform will perform the following actions:
 Note: You didn't use the -out option to save this plan, so Terraform can't guarantee to take exactly these actions if you run "terraform apply" now.
 ```
 
-- 適用
+### 1.4. 適用
 
 (実行コマンド)
 ```bash
