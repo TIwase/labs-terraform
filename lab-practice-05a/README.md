@@ -1,4 +1,4 @@
-# EC2デプロイ手順
+# Terraform CloudのCLI-driven WorkflowによるEC2デプロイ
 
 [EC2デプロイ手順](#ec2デプロイ手順)  
 - [terraform構成](#terraform構成)  
