@@ -5,13 +5,13 @@ terraform {
       version = "= 4.65.0"
     }
   }
-  cloud {
-    organization = "iwaset-org"
+  # cloud {
+  #   organization = "iwaset-org"
 
-    workspaces {
-      name = "labs-terraform"
-    }
-  }
+  #   workspaces {
+  #     name = "labs-terraform"
+  #   }
+  # }
 }
 # Configure the AWS Provider
 provider "aws" {
