@@ -2,11 +2,15 @@
 
 [EC2デプロイ手順](#ec2デプロイ手順)  
 - [terraform構成](#terraform構成)  
-- [1. terraform実行](#1-terraform実行)  
-  - [1.1. terraform cloudログイン](#11-terraform-cloudログイン)
-  - [1.2. 初期化](#12-初期化)
-  - [1.3. デバッグ](#13-リソース単体のデプロイを実行)
-  - [1.4. 適用](#14-適用)
+- [1. 事前準備](#1-事前準備)  
+  - [1.1. Terraform CloudのAPI Token発行](#11-terraform-cloudのapi-token発行)
+  - [1.2. Workspace設定](#12-workspace設定)
+- [2. terraform実行](#2-terraform実行)
+  - [2.1. Terraform Cloudでログイン](#21-terraform-cloudでログイン)
+  - [2.2. provider設定](#22-provider設定)
+  - [2.3. 初期化](#23-初期化)
+  - [2.4. デバッグ](#24-デバッグ)
+  - [2.4. 適用](#25-適用)
 
 ## terraform構成
 
@@ -17,27 +21,129 @@
 |[aws-createEc2](./modules/aws-createEc2/)|module.create_instance|EC2作成|
 
 
-## 1. terraform実行
+## 1. 事前準備
 
-<!-- ### 1.1. S3バケット作成
-- 実行するterraformテンプレート配下へ移動  
+### 1.1. Terraform CloudのAPI Token発行
 
+※既に有効なTokenを発行している場合、本手順をスキップして「1.2. Terraform Cloudでログイン」へ進む
+
+- ブラウザで下記にアクセスし、[Continue with HCP account]をクリックして、SSO(githubアカウント)でサインインする  
+※terraform cloud用に新規アカウント作成は不要
+```
+https://app.terraform.io/
+```
+
+- [Settings] > [API tokens] > [User tokens]の[user settings page]を選択する
+![API Tokens](./images/WebCapture_30-7-2023_164755_app.terraform.io.jpeg)
+
+- [Create an API token]を選択する
+![Tokens](./images/WebCapture_30-7-2023_16487_app.terraform.io.jpeg)
+
+- [Description]と[Expiration]に任意の値を入力して[Generate token]を選択する
+![Create an Token](./images/WebCapture_30-7-2023_164822_app.terraform.io.jpeg)
+
+- 生成されたTokenの値を控えておく
+![Created the Token](./images/WebCapture_30-7-2023_164835_app.terraform.io.jpeg)
+
+
+### 1.2. Workspace設定
+
+対象のWorkspaceを選択し、[Settings] > [General] > [Exection Mode]をLocalにして、[Save settings]を選択
+
+![Exection Mode](./images/WebCapture_6-8-2023_151139_app.terraform.io.jpeg)
+
+
+## 2. terraform実行
+### 2.1. Terraform Cloudでログイン  
+
+ターミナルにて、下記コマンド実行する  
 (実行コマンド)
-```bash
-cd ./lab-practice-05/modules/aws-createBucket; ls
-```
-下記が出力されることを確認
-```
-main.tf  outputs.tf  variables.tf
-``` -->
-
-### 1.1. terraform cloudログイン
 ```bash
 terraform login
 ```
+下記が出力される
+```
+Terraform will request an API token for app.terraform.io using your browser.
+
+If login is successful, Terraform will store the token in plain text in
+the following file for use by subsequent commands:
+    /home/gitpod/.terraform.d/credentials.tfrc.json
+
+Do you want to proceed?
+  Only 'yes' will be accepted to confirm.
+
+  Enter a value: 
+```
+
+yesと入力してエンターを押す
+```
+Enter a value: yes
 
 
-### 1.2. 初期化
+---------------------------------------------------------------------------------
+
+Terraform must now open a web browser to the tokens page for app.terraform.io.
+
+If a browser does not open this automatically, open the following URL to proceed:
+    https://app.terraform.io/app/settings/tokens?source=terraform-login
+
+
+---------------------------------------------------------------------------------
+
+Generate a token using your browser, and copy-paste it into this prompt.
+
+Terraform will store the token in plain text in the following file
+for use by subsequent commands:
+    /home/gitpod/.terraform.d/credentials.tfrc.json
+
+Token for app.terraform.io:
+  Enter a value: 
+```
+
+先ほど控えたAPI Token値を貼り付けてエンターを押下  
+```
+Token for app.terraform.io:
+  Enter a value: 
+
+
+Retrieved token for user <ユーザ名>
+
+
+---------------------------------------------------------------------------------
+
+                                          -                                
+                                          -----                           -
+                                          ---------                      --
+                                          ---------  -                -----
+                                           ---------  ------        -------
+                                             -------  ---------  ----------
+                                                ----  ---------- ----------
+                                                  --  ---------- ----------
+   Welcome to Terraform Cloud!                     -  ---------- -------
+                                                      ---  ----- ---
+   Documentation: terraform.io/docs/cloud             --------   -
+                                                      ----------
+                                                      ----------
+                                                       ---------
+                                                           -----
+                                                               -
+
+
+   New to TFC? Follow these steps to instantly apply an example configuration:
+
+   $ git clone https://github.com/hashicorp/tfc-getting-started.git
+   $ cd tfc-getting-started
+   $ scripts/setup.sh
+   ```
+
+terraform cloudによるログインが完了となる
+
+### 2.2. Provider設定
+
+providerファイルを開き、cloud blockに、terraform cloudのorganization名と、workspace名を設定する  
+[provider.tf](./provider.tf)
+
+### 2.3. 初期化
 
 terraformを初期化する  
 (実行コマンド)
@@ -77,7 +183,7 @@ If you ever set or change modules or Terraform Settings, run "terraform init"
 again to reinitialize your working directory.
 ```
 
-### 1.3. デバッグ
+### 2.4. デバッグ
 
 (実行コマンド)
 ```bash
@@ -104,7 +210,7 @@ Terraform will perform the following actions:
 Note: You didn't use the -out option to save this plan, so Terraform can't guarantee to take exactly these actions if you run "terraform apply" now.
 ```
 
-### 1.4. 適用
+### 2.5. 適用
 
 (実行コマンド)
 ```bash
