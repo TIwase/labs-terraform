@@ -25,7 +25,7 @@
 
 ### 1.1. Terraform CloudのAPI Token発行
 
-※既に有効なTokenを発行している場合、本手順をスキップして「1.2. Terraform Cloudでログイン」へ進む
+※既に有効なTokenを発行している場合、本手順をスキップして「1.2. Workspace設定」へ進む
 
 - ブラウザで下記にアクセスし、[Continue with HCP account]をクリックして、SSO(githubアカウント)でサインインする  
 ※terraform cloud用に新規アカウント作成は不要
