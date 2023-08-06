@@ -10,7 +10,7 @@
   - [2.2. provider設定](#22-provider設定)
   - [2.3. 初期化](#23-初期化)
   - [2.4. デバッグ](#24-デバッグ)
-  - [2.4. 適用](#25-適用)
+  - [2.5. 適用](#25-適用)
 
 ## terraform構成
 
@@ -48,6 +48,7 @@ https://app.terraform.io/
 
 ### 1.2. Workspace設定
 
+※VCSを利用していない場合は本手順をスキップして「2. terraform実行」へ進む  
 対象のWorkspaceを選択し、[Settings] > [General] > [Exection Mode]をLocalにして、[Save settings]を選択
 
 ![Exection Mode](./images/WebCapture_6-8-2023_151139_app.terraform.io.jpeg)
@@ -250,4 +251,4 @@ Outputs:
 (以下略...)
 ```
 
-続いて、-targetオプションをcreate_keypair, create_instanceに変えて、手順1.3を繰り返し実行する
+続いて、-targetオプションをcreate_keypair, create_instanceに変えて、手順2.4~2.5を繰り返し実行する
