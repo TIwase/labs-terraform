@@ -2,12 +2,16 @@
 
 [EC2デプロイ手順](#ec2デプロイ手順)  
 - [terraform構成](#terraform構成)  
-- [1. terraform実行](#1-terraform実行)  
-  - [1.1. terraform cloudログイン](#11-terraform-cloudログイン)
-  - [1.2. 初期化](#12-初期化)
-  - [1.3. デバッグ](#13-リソース単体のデプロイを実行)
-  - [1.4. 適用](#14-適用)
-
+- [1. 事前準備](#1-事前準備)  
+  - [1.1. Workspace新規作成](#11-workspace新規作成)
+  - [1.2. Workspace設定](#12-workspace設定)
+  - [1.3. Variables設定](#13-variables設定)
+- [2. リソースデプロイ](#2-リソースデプロイ)
+  - [2.1. デバッグ](#21-デバッグ)
+  - [2.2. 適用](#22-適用)
+- [3. リソース削除](#3-リソース削除)
+  - [3.1. destroy実行](#31-destroy実行)
+  
 ## terraform構成
 
 |Directory|Module|Description|
@@ -17,131 +21,91 @@
 |[aws-createEc2](./modules/aws-createEc2/)|module.create_instance|EC2作成|
 
 
-## 1. terraform実行
+## 1. 事前準備
+### 1.1. Workspace新規作成
+ 
+※既存Workspaceを利用する場合は本手順をスキップして「1.2. Workspace設定」へ進む  
 
-<!-- ### 1.1. S3バケット作成
-- 実行するterraformテンプレート配下へ移動  
-
-(実行コマンド)
-```bash
-cd ./lab-practice-05/modules/aws-createBucket; ls
-```
-下記が出力されることを確認
-```
-main.tf  outputs.tf  variables.tf
-``` -->
-
-### 1.1. terraform cloudログイン
-```bash
-terraform login
-```
+- Terraform Cloud側の設定  
+[Projects & workspaces] > [New] > [Workspace]を選択する。  
+[1. Choose Type]ページにて、[Version control workflow]を選択する
+![Choose Type](./images/GettingStarted_TerraformCloud-GoogleChrome_2023_07_10_1_37_53.png)
+[2. Connect to VCS]ページにて、[Github.com\(Custom\)]を選択する
+![Connect to VCS](./images/iwaset-org_TerraformCloud-GoogleChrome_2023_07_10_1_42_46.png)
+[Set up provider]ページにて、表示された下記情報を控える
+![Setup provider](./images/iwaset-org_TerraformCloud-GoogleChrome_2023_07_10_1_42_53.png)
+> - Application name
+> - Homepage URL
+> - Authorization callback URL  
 
 
-### 1.2. 初期化
+- VCS側(Github)の設定  
+VCS(ここではGithub)にサインインし、[Settings] > [Developer settings] > [OAuth Apps]の[Register a new application]を選択する
+![OAuth Apps](./images/GitHub-GoogleChrome_2023_07_10_1_44_56.png)
+上記で控えた情報をペーストし、[Register application]を選択
+![Register New OAuth app](./images/GitHub-GoogleChrome_2023_07_10_1_45_48.png)
+発行されたClient IDと、Client secretを控える
+![OAuth App Keys](./images/GitHub-GoogleChrome_2023_07_10_1_46_50.png)
 
-terraformを初期化する  
-(実行コマンド)
-```bash
-terraform init
-```
-下記が出力されればok  
-```bash
-Initializing Terraform Cloud...
-Initializing modules...
+- Terraform Cloud側の設定(再び)  
+Terraform Cloudの[Set up provider]ブラウザページにて、Nameに任意の値を入力し、上記で控えたClient IDとClient secretを入力して[Connect and continue]を選択
+![Input Client Creds](./images/GitHub-GoogleChrome_2023_07_10_1_47_34.png)
+認証を許可する(Authorizeをクリック)
+![Authorize Terraform Cloud](./images/GitHub-GoogleChrome_2023_07_10_1_47_42.png)
+[3. Set up SSH keypair]ページにて、optionalであるため、ここの設定はスキップする
+![Setup SSH key](./images/GitHub-GoogleChrome_2023_07_10_1_48_32.png)
 
-Initializing provider plugins...
-- Finding latest version of hashicorp/local...
-- Finding latest version of hashicorp/tls...
-- Finding hashicorp/aws versions matching "4.65.0"...
-- Finding latest version of hashicorp/template...
-- Installing hashicorp/local v2.4.0...
-- Installed hashicorp/local v2.4.0 (signed by HashiCorp)
-- Installing hashicorp/tls v4.0.4...
-- Installed hashicorp/tls v4.0.4 (signed by HashiCorp)
-- Installing hashicorp/aws v4.65.0...
-- Installed hashicorp/aws v4.65.0 (signed by HashiCorp)
-- Installing hashicorp/template v2.2.0...
-- Installed hashicorp/template v2.2.0 (signed by HashiCorp)
+### 1.2. Workspace設定
+対象のWorkspaceを選択し、[Settings] > [General] > [Exection Mode]をRemoteにし、[Terraform Working Directory]に対象のディレクトリを入力し、[Save settings]を選択  
+※ここでは、[lab-practive-05b]をWorking Directoryに設定  
+![Exection Mode](./images/WebCapture_7-8-2023_02143_app.terraform.io.jpeg)
 
-Terraform has created a lock file .terraform.lock.hcl to record the provider
-selections it made above. Include this file in your version control repository
-so that Terraform can guarantee to make the same selections by default when
-you run "terraform init" in the future.
+### 1.3. Variables設定
+対象のWorkspaceを選択し、[Variables] > [Workspace variables]から[\+ Add variable]を選択し、AWSアカウントのIAMクレデンシャル情報を下記の通りに入力して[Add variable]を押下  
+※Sensitiveのチェックボックスを選択し、Descriptionは必要に応じて記入する
 
-Terraform Cloud has been successfully initialized!
+|Key|Value|variable category|
+|--|--|--|
+|AWS_ACCESS_KEY_ID|AKIAXXXXXXXXX|Environment variable|
+|AWS_SECRET_ACCESS_KEY|XXXXXXXXXXXX|Environment variable|
 
-You may now begin working with Terraform Cloud. Try running "terraform plan" to
-see any changes that are required for your infrastructure.
 
-If you ever set or change modules or Terraform Settings, run "terraform init"
-again to reinitialize your working directory.
-```
+![Variables](./images/WebCapture_7-8-2023_11728_app.terraform.io.jpeg)
 
-### 1.3. デバッグ
 
-(実行コマンド)
-```bash
-terraform plan -target=module.create_vpcs
-```
+## 2. リソースデプロイ
+### 2.1. デバッグ 
+対象Workspaceを選択し、[Actions] > [Start new run]を選択する
 
-下記が出力されることを確認
-```
-Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
-  + create
+![Start new run](./images/WebCapture_7-8-2023_12025_app.terraform.io.jpg)
+[run type]を[Plan only]にし、[Terraform version]は[Default (1.5.2)]として[Start run]を押下　　
+![Plan Result](./images/WebCapture_7-8-2023_12135_app.terraform.io.jpeg)
+Plan finishedと出力されていれば、デバッグ完了
 
-Terraform will perform the following actions:
+### 2.2. 適用
+対象Workspaceを選択し、[Actions] > [Start new run]を選択する  
+[run type]を[Plan and apply]にし[Start run]を押下　　
+![Plan and apply](./images/WebCapture_13-8-2023_213140_app.terraform.io.jpeg)
 
-...(中略)
- Warning: Resource targeting is in effect
-│ 
-│ You are creating a plan with the -target option, which means that the result of this plan may not represent all of the changes requested by the current configuration.
-│ 
-│ The -target option is not for routine use, and is provided only for exceptional situations such as recovering from errors or mistakes, or when Terraform specifically suggests to use it as part of an error message.
-╵
+Plan finishedと出力されたら、[Cinfirm & Apply]を押下
+![Confirm Apply](./images/WebCapture_13-8-2023_213245_app.terraform.io.jpeg)
 
-─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+Apply finishedと出力されることを確認する
+![Apply finished](./images/WebCapture_13-8-2023_213430_app.terraform.io.jpeg)
 
-Note: You didn't use the -out option to save this plan, so Terraform can't guarantee to take exactly these actions if you run "terraform apply" now.
-```
+## 3. リソース削除
+### 3.1. destroy実行
+対象Workspaceを選択し、[Settings] > [Destruction and Deletion] > [Manually destroy] > [Queue destroy plan]を選択
+![destroy](./images/WebCapture_13-8-2023_213725_app.terraform.io.jpeg)
 
-### 1.4. 適用
+Workspace名を入力して、[Queue destroy plan]を押下
+![Enter Workspace Name](./images/WebCapture_13-8-2023_213743_app.terraform.io.jpeg)
 
-(実行コマンド)
-```bash
-terraform apply -target=module.create_vpcs
-```
+Plan finishedと出力されたら[Confirm & Apply]を押下
+![Confirm destroy](./images/WebCapture_13-8-2023_213841_app.terraform.io.jpeg)
 
-下記が出力される
+[Confirm Plan]を押下
+![Confirm plan](./images/WebCapture_13-8-2023_213850_app.terraform.io.jpeg)
 
-```
-...(中略)
-Do you want to perform these actions?
-  Terraform will perform the actions described above.
-  Only 'yes' will be accepted to approve.
-
-  Enter a value: 
-```
-
-yesと入力してエンター押す
-
-```
-  Enter a value: yes
-
-│ Warning: Applied changes may be incomplete
-│ 
-│ The plan was created with the -target option in effect, so some changes requested in the configuration may have been ignored and the output values may not be fully updated. Run the following command to verify that
-│ no other changes are pending:
-│     terraform plan
-│ 
-│ Note that the -target option is not suitable for routine use, and is provided only for exceptional situations such as recovering from errors or mistakes, or when Terraform specifically suggests to use it as part of
-│ an error message.
-╵
-
-Apply complete! Resources: 3 added, 0 changed, 0 destroyed.
-
-Outputs:
-
-(以下略...)
-```
-
-続いて、-targetオプションをcreate_keypair, create_instanceに変えて、手順1.3を繰り返し実行する
+Apply finishedと出力されていればリソース削除完了
+![Destroyed](./images/WebCapture_13-8-2023_21400_app.terraform.io.jpeg)
