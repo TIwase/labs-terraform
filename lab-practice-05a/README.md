@@ -4,7 +4,8 @@
 - [terraform構成](#terraform構成)  
 - [1. 事前準備](#1-事前準備)  
   - [1.1. Terraform CloudのAPI Token発行](#11-terraform-cloudのapi-token発行)
-  - [1.2. Workspace設定](#12-workspace設定)
+  - [1.2. workspace新規作成](#12-workspace新規作成)
+  - [1.3. Workspace設定](#13-workspace設定)
 - [2. terraform実行](#2-terraform実行)
   - [2.1. Terraform Cloudでログイン](#21-terraform-cloudでログイン)
   - [2.2. provider設定](#22-provider設定)
@@ -46,13 +47,19 @@ https://app.terraform.io/
 ![Created the Token](./images/WebCapture_30-7-2023_164835_app.terraform.io.jpeg)
 
 
-### 1.2. Workspace設定
+### 1.2. Workspace新規作成
+※VCSを利用する場合、本手順をスキップしてlab-practice-05bの[1.1節](../lab-practice-05b/README.md)を実施し、下記の「1.3. Workspace設定」へ進む  
 
-※VCSを利用していない場合は本手順をスキップして「2. terraform実行」へ進む  
-対象のWorkspaceを選択し、[Settings] > [General] > [Exection Mode]をLocalにして、[Save settings]を選択
+[Projects & workspaces] > [New] > [Workspace]を選択する。 
+[1. Choose Type]ページにて、[CLI-driven workflow]を選択する
+![Choose Type](../lab-practice-05b/images/GettingStarted_TerraformCloud-GoogleChrome_2023_07_10_1_37_53.png) 
+
+### 1.3. Workspace設定
+対象のWorkspaceを選択し、[Settings] > [General] > [Exection Mode]をLocalにして、[Save settings]を選択  
 
 ![Exection Mode](./images/WebCapture_6-8-2023_151139_app.terraform.io.jpeg)
 
+Workspace名を入力し、[Create workspace]を押下
 
 ## 2. terraform実行
 ### 2.1. Terraform Cloudでログイン  
@@ -142,7 +149,7 @@ terraform cloudによるログインが完了となる
 ### 2.2. Provider設定
 
 providerファイルを開き、cloud blockに、terraform cloudのorganization名と、workspace名を設定する  
-[provider.tf](./provider.tf)
+[provider.tf](./provider.tf) (8-14行目)
 
 ### 2.3. 初期化
 
