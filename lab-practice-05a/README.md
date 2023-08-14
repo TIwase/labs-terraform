@@ -4,7 +4,7 @@
 - [terraform構成](#terraform構成)  
 - [1. 事前準備](#1-事前準備)  
   - [1.1. Terraform CloudのAPI Token発行](#11-terraform-cloudのapi-token発行)
-  - [1.2. workspace新規作成](#12-workspace新規作成)
+  - [1.2. Workspace新規作成](#12-workspace新規作成)
   - [1.3. Workspace設定](#13-workspace設定)
 - [2. terraform実行](#2-terraform実行)
   - [2.1. Terraform Cloudでログイン](#21-terraform-cloudでログイン)
@@ -29,7 +29,7 @@
 ※既に有効なTokenを発行している場合、本手順をスキップして「1.2. Workspace設定」へ進む
 
 - ブラウザで下記にアクセスし、[Continue with HCP account]をクリックして、SSO(githubアカウント)でサインインする  
-※terraform cloud用に新規アカウント作成は不要
+※Terraform Cloud用に新規アカウント作成は不要
 ```
 https://app.terraform.io/
 ```
