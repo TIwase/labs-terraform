@@ -50,21 +50,22 @@ https://app.terraform.io/
 ### 1.2. Workspace新規作成
 ※VCSを利用する場合、本手順をスキップしてlab-practice-05bの[1.1節](../lab-practice-05b/README.md)を実施し、下記の「1.3. Workspace設定」へ進む  
 
-[Projects & workspaces] > [New] > [Workspace]を選択する。 
-[1. Choose Type]ページにて、[CLI-driven workflow]を選択する
+- [Projects & workspaces] > [New] > [Workspace]を選択する。 
+- [1. Choose Type]ページにて、[CLI-driven workflow]を選択する
 ![Choose Type](../lab-practice-05b/images/GettingStarted_TerraformCloud-GoogleChrome_2023_07_10_1_37_53.png) 
 
-### 1.3. Workspace設定
-対象のWorkspaceを選択し、[Settings] > [General] > [Exection Mode]をLocalにして、[Save settings]を選択  
+- [2. Configure settings]ページにて、Workspace名を入力し、[Create workspace]を押下
+![Configure settings](./images/WebCapture_14-8-2023_144355_app.terraform.io.jpeg)
 
+### 1.3. Workspace設定
+- 対象のWorkspaceを選択し、[Settings] > [General] > [Exection Mode]をLocalにして、[Save settings]を選択  
 ![Exection Mode](./images/WebCapture_6-8-2023_151139_app.terraform.io.jpeg)
 
-Workspace名を入力し、[Create workspace]を押下
 
 ## 2. terraform実行
 ### 2.1. Terraform Cloudでログイン  
 
-ターミナルにて、下記コマンド実行する  
+- ターミナルにて、下記コマンド実行する  
 (実行コマンド)
 ```bash
 terraform login
@@ -108,7 +109,7 @@ Token for app.terraform.io:
   Enter a value: 
 ```
 
-先ほど控えたAPI Token値を貼り付けてエンターを押下  
+- 先ほど控えたAPI Token値を貼り付けてエンターを押下  
 ```
 Token for app.terraform.io:
   Enter a value: 
@@ -153,7 +154,7 @@ providerファイルを開き、cloud blockに、terraform cloudのorganization�
 
 ### 2.3. 初期化
 
-terraformを初期化する  
+- terraformを初期化する  
 (実行コマンド)
 ```bash
 terraform init
