@@ -15,4 +15,8 @@ RUN wget "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -O ~/awscliv
     && tfenv install latest \
     && tfenv use latest \
     && tfenv list \
-    && terraform --version
+    && terraform --version \
+    && wget https://releases.hashicorp.com/sentinel/0.22.1/sentinel_0.22.1_linux_amd64.zip -O ~/sentinel_0.22.1_linux_amd64.zip \
+    && cd ~ && sudo unzip ~/sentinel_0.22.1_linux_amd64.zip -d /usr/local/bin/ && rm ~/sentinel_0.22.1_linux_amd64.zip \
+    && sentinel --version
+
