@@ -2,13 +2,14 @@ import "tfplan/v2" as tfplan
 
 # Get AWS instance from modules
 ec2_instance = filter tfplan.resource_changes as _, rc {
-  rc.type is "module.create_instance"
+  rc.type is "aws_instance" and
+    (rc.change.actions contains "create" or rc.change.actions is ["update"])
 }
 
 # Mandatory Instance Tags
 mandatory_tags = [ "Managed" ]
 
-# Rule to enforce "Name" and "Managed" tags on all instances
+# Rule to enforce "Managed" tags on all instances
 mandatory_instance_tags = rule {
   all ec2_instance as _, instance {
     all mandatory_tags as mt {
