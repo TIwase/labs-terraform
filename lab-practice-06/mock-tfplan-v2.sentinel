@@ -1,0 +1,2526 @@
+terraform_version = "1.5.2"
+
+planned_values = {
+	"outputs": {
+		"instance_output_all": {
+			"name":      "instance_output_all",
+			"sensitive": false,
+			"value":     null,
+		},
+		"keypair_output_all": {
+			"name":      "keypair_output_all",
+			"sensitive": false,
+			"value": {
+				"name": "labtest-keypair-01",
+			},
+		},
+		"vpcs_output_all": {
+			"name":      "vpcs_output_all",
+			"sensitive": false,
+			"value":     null,
+		},
+	},
+	"resources": {
+		"module.create_instance.aws_instance.demo": {
+			"address":        "module.create_instance.aws_instance.demo",
+			"depends_on":     [],
+			"deposed_key":    "",
+			"index":          null,
+			"mode":           "managed",
+			"module_address": "module.create_instance",
+			"name":           "demo",
+			"provider_name":  "registry.terraform.io/hashicorp/aws",
+			"tainted":        false,
+			"type":           "aws_instance",
+			"values": {
+				"ami": "REDACTED_SENSITIVE",
+				"credit_specification":                 [],
+				"get_password_data":                    false,
+				"hibernation":                          null,
+				"instance_initiated_shutdown_behavior": "terminate",
+				"instance_type":                        "t2.micro",
+				"key_name":                             "labtest-keypair-01",
+				"launch_template":                      [],
+				"root_block_device": [
+					{
+						"delete_on_termination": true,
+						"tags":                  null,
+						"volume_size":           10,
+						"volume_type":           "gp2",
+					},
+				],
+				"source_dest_check": true,
+				"tags": {
+					"Managed": "tf-managed",
+					"Name":    "labtest-username-02",
+				},
+				"tags_all": {
+					"Managed": "tf-managed",
+					"Name":    "labtest-username-02",
+				},
+				"timeouts":                    null,
+				"user_data":                   "5722471ee3cb78c8e017e48eb8bb72be2554e4e4",
+				"user_data_replace_on_change": false,
+				"volume_tags":                 null,
+			},
+		},
+		"module.create_keypair.aws_key_pair.key_pair": {
+			"address":        "module.create_keypair.aws_key_pair.key_pair",
+			"depends_on":     [],
+			"deposed_key":    "",
+			"index":          null,
+			"mode":           "managed",
+			"module_address": "module.create_keypair",
+			"name":           "key_pair",
+			"provider_name":  "registry.terraform.io/hashicorp/aws",
+			"tainted":        false,
+			"type":           "aws_key_pair",
+			"values": {
+				"key_name": "labtest-keypair-01",
+				"tags": {
+					"Managed": "tf-managed",
+				},
+				"tags_all": {
+					"Managed": "tf-managed",
+				},
+			},
+		},
+		"module.create_keypair.local_file.private_key_pem": {
+			"address":        "module.create_keypair.local_file.private_key_pem",
+			"depends_on":     [],
+			"deposed_key":    "",
+			"index":          null,
+			"mode":           "managed",
+			"module_address": "module.create_keypair",
+			"name":           "private_key_pem",
+			"provider_name":  "registry.terraform.io/hashicorp/local",
+			"tainted":        false,
+			"type":           "local_file",
+			"values": {
+				"content_base64":       null,
+				"directory_permission": "0777",
+				"file_permission":      "0777",
+				"filename":             "./.key_pair/labtest-keypair-01.id_rsa",
+				"sensitive_content":    "REDACTED_SENSITIVE",
+				"source":               null,
+			},
+		},
+		"module.create_keypair.local_file.public_key_openssh": {
+			"address":        "module.create_keypair.local_file.public_key_openssh",
+			"depends_on":     [],
+			"deposed_key":    "",
+			"index":          null,
+			"mode":           "managed",
+			"module_address": "module.create_keypair",
+			"name":           "public_key_openssh",
+			"provider_name":  "registry.terraform.io/hashicorp/local",
+			"tainted":        false,
+			"type":           "local_file",
+			"values": {
+				"content_base64":       null,
+				"directory_permission": "0777",
+				"file_permission":      "0777",
+				"filename":             "./.key_pair/labtest-keypair-01.id_rsa.pub",
+				"sensitive_content":    "REDACTED_SENSITIVE",
+				"source":               null,
+			},
+		},
+		"module.create_keypair.tls_private_key.keygen": {
+			"address":        "module.create_keypair.tls_private_key.keygen",
+			"depends_on":     [],
+			"deposed_key":    "",
+			"index":          null,
+			"mode":           "managed",
+			"module_address": "module.create_keypair",
+			"name":           "keygen",
+			"provider_name":  "registry.terraform.io/hashicorp/tls",
+			"tainted":        false,
+			"type":           "tls_private_key",
+			"values": {
+				"algorithm":   "RSA",
+				"ecdsa_curve": "P224",
+				"rsa_bits":    4096,
+			},
+		},
+		"module.create_vpcs.aws_security_group.allow_traffic": {
+			"address":        "module.create_vpcs.aws_security_group.allow_traffic",
+			"depends_on":     [],
+			"deposed_key":    "",
+			"index":          null,
+			"mode":           "managed",
+			"module_address": "module.create_vpcs",
+			"name":           "allow_traffic",
+			"provider_name":  "registry.terraform.io/hashicorp/aws",
+			"tainted":        false,
+			"type":           "aws_security_group",
+			"values": {
+				"description": "Allow SSH and TLS inbound traffic",
+				"egress": [
+					{
+						"cidr_blocks": [
+							"0.0.0.0/0",
+						],
+						"description":      "",
+						"from_port":        0,
+						"ipv6_cidr_blocks": [],
+						"prefix_list_ids":  [],
+						"protocol":         "-1",
+						"security_groups":  [],
+						"self":             false,
+						"to_port":          0,
+					},
+				],
+				"ingress": [
+					{
+						"cidr_blocks": [
+							"172.32.0.0/16",
+						],
+						"description":      "SSH from VPC",
+						"from_port":        22,
+						"ipv6_cidr_blocks": [],
+						"prefix_list_ids":  [],
+						"protocol":         "tcp",
+						"security_groups":  [],
+						"self":             false,
+						"to_port":          22,
+					},
+					{
+						"cidr_blocks": [
+							"172.32.0.0/16",
+						],
+						"description":      "TLS from VPC",
+						"from_port":        443,
+						"ipv6_cidr_blocks": [],
+						"prefix_list_ids":  [],
+						"protocol":         "tcp",
+						"security_groups":  [],
+						"self":             false,
+						"to_port":          443,
+					},
+				],
+				"name": "allow_traffic",
+				"revoke_rules_on_delete": false,
+				"tags": {
+					"Managed": "tf-managed",
+					"Name":    "labtest-sg-01",
+				},
+				"tags_all": {
+					"Managed": "tf-managed",
+					"Name":    "labtest-sg-01",
+				},
+				"timeouts": null,
+			},
+		},
+		"module.create_vpcs.aws_subnet.subnet_apne1c": {
+			"address":        "module.create_vpcs.aws_subnet.subnet_apne1c",
+			"depends_on":     [],
+			"deposed_key":    "",
+			"index":          null,
+			"mode":           "managed",
+			"module_address": "module.create_vpcs",
+			"name":           "subnet_apne1c",
+			"provider_name":  "registry.terraform.io/hashicorp/aws",
+			"tainted":        false,
+			"type":           "aws_subnet",
+			"values": {
+				"assign_ipv6_address_on_creation":                false,
+				"availability_zone":                              "ap-northeast-1c",
+				"cidr_block":                                     "172.32.1.0/24",
+				"customer_owned_ipv4_pool":                       null,
+				"enable_dns64":                                   false,
+				"enable_lni_at_device_index":                     null,
+				"enable_resource_name_dns_a_record_on_launch":    false,
+				"enable_resource_name_dns_aaaa_record_on_launch": false,
+				"ipv6_cidr_block":                                null,
+				"ipv6_native":                                    false,
+				"map_customer_owned_ip_on_launch":                null,
+				"map_public_ip_on_launch":                        false,
+				"outpost_arn":                                    null,
+				"tags": {
+					"Managed": "tf-managed",
+					"Name":    "labtest-subnet-01",
+				},
+				"tags_all": {
+					"Managed": "tf-managed",
+					"Name":    "labtest-subnet-01",
+				},
+				"timeouts": null,
+			},
+		},
+		"module.create_vpcs.aws_vpc.test": {
+			"address":        "module.create_vpcs.aws_vpc.test",
+			"depends_on":     [],
+			"deposed_key":    "",
+			"index":          null,
+			"mode":           "managed",
+			"module_address": "module.create_vpcs",
+			"name":           "test",
+			"provider_name":  "registry.terraform.io/hashicorp/aws",
+			"tainted":        false,
+			"type":           "aws_vpc",
+			"values": {
+				"assign_generated_ipv6_cidr_block": null,
+				"cidr_block":                       "172.32.0.0/16",
+				"enable_dns_support":               true,
+				"instance_tenancy":                 "default",
+				"ipv4_ipam_pool_id":                null,
+				"ipv4_netmask_length":              null,
+				"ipv6_ipam_pool_id":                null,
+				"ipv6_netmask_length":              null,
+				"tags": {
+					"Managed": "tf-managed",
+					"Name":    "labtest-vpc-01",
+				},
+				"tags_all": {
+					"Managed": "tf-managed",
+					"Name":    "labtest-vpc-01",
+				},
+			},
+		},
+	},
+}
+
+variables = {
+	"instance_name_tag_str": {
+		"name":  "instance_name_tag_str",
+		"value": "labtest-username-02",
+	},
+	"instance_type_str": {
+		"name":  "instance_type_str",
+		"value": "t2.micro",
+	},
+	"keypair_name_str": {
+		"name":  "keypair_name_str",
+		"value": "labtest-keypair-01",
+	},
+	"root_volume_size_num": {
+		"name":  "root_volume_size_num",
+		"value": 10,
+	},
+	"root_volume_type_str": {
+		"name":  "root_volume_type_str",
+		"value": "gp2",
+	},
+	"s3_bucket_name_str": {
+		"name":  "s3_bucket_name_str",
+		"value": "labtest-backend-tfstate",
+	},
+	"subnet_az_str": {
+		"name":  "subnet_az_str",
+		"value": "ap-northeast-1c",
+	},
+	"subnet_cidr_str": {
+		"name":  "subnet_cidr_str",
+		"value": "172.32.1.0/24",
+	},
+	"subnet_name_tag_str": {
+		"name":  "subnet_name_tag_str",
+		"value": "labtest-subnet-01",
+	},
+	"vpc_cidr_str": {
+		"name":  "vpc_cidr_str",
+		"value": "172.32.0.0/16",
+	},
+	"vpc_name_tag_str": {
+		"name":  "vpc_name_tag_str",
+		"value": "labtest-vpc-01",
+	},
+}
+
+resource_changes = {
+	"module.create_instance.aws_instance.demo": {
+		"address": "module.create_instance.aws_instance.demo",
+		"change": {
+			"actions": [
+				"create",
+			],
+			"after": {
+				"ami": "REDACTED_SENSITIVE",
+				"credit_specification":                 [],
+				"get_password_data":                    false,
+				"hibernation":                          null,
+				"instance_initiated_shutdown_behavior": "terminate",
+				"instance_type":                        "t2.micro",
+				"key_name":                             "labtest-keypair-01",
+				"launch_template":                      [],
+				"root_block_device": [
+					{
+						"delete_on_termination": true,
+						"tags":                  null,
+						"volume_size":           10,
+						"volume_type":           "gp2",
+					},
+				],
+				"source_dest_check": true,
+				"tags": {
+					"Managed": "tf-managed",
+					"Name":    "labtest-username-02",
+				},
+				"tags_all": {
+					"Managed": "tf-managed",
+					"Name":    "labtest-username-02",
+				},
+				"timeouts":                    null,
+				"user_data":                   "5722471ee3cb78c8e017e48eb8bb72be2554e4e4",
+				"user_data_replace_on_change": false,
+				"volume_tags":                 null,
+			},
+			"after_unknown": {
+				"arn": true,
+				"associate_public_ip_address":        true,
+				"availability_zone":                  true,
+				"capacity_reservation_specification": true,
+				"cpu_core_count":                     true,
+				"cpu_threads_per_core":               true,
+				"credit_specification":               [],
+				"disable_api_stop":                   true,
+				"disable_api_termination":            true,
+				"ebs_block_device":                   true,
+				"ebs_optimized":                      true,
+				"enclave_options":                    true,
+				"ephemeral_block_device":             true,
+				"host_id":                            true,
+				"host_resource_group_arn":            true,
+				"iam_instance_profile":               true,
+				"id":                           true,
+				"instance_state":               true,
+				"ipv6_address_count":           true,
+				"ipv6_addresses":               true,
+				"launch_template":              [],
+				"maintenance_options":          true,
+				"metadata_options":             true,
+				"monitoring":                   true,
+				"network_interface":            true,
+				"outpost_arn":                  true,
+				"password_data":                true,
+				"placement_group":              true,
+				"placement_partition_number":   true,
+				"primary_network_interface_id": true,
+				"private_dns":                  true,
+				"private_dns_name_options":     true,
+				"private_ip":                   true,
+				"public_dns":                   true,
+				"public_ip":                    true,
+				"root_block_device": [
+					{
+						"device_name": true,
+						"encrypted":   true,
+						"iops":        true,
+						"kms_key_id":  true,
+						"throughput":  true,
+						"volume_id":   true,
+					},
+				],
+				"secondary_private_ips":  true,
+				"security_groups":        true,
+				"subnet_id":              true,
+				"tags":                   {},
+				"tags_all":               {},
+				"tenancy":                true,
+				"user_data_base64":       true,
+				"vpc_security_group_ids": true,
+			},
+			"before": null,
+		},
+		"deposed":        "",
+		"index":          null,
+		"mode":           "managed",
+		"module_address": "module.create_instance",
+		"name":           "demo",
+		"provider_name":  "registry.terraform.io/hashicorp/aws",
+		"type":           "aws_instance",
+	},
+	"module.create_keypair.aws_key_pair.key_pair": {
+		"address": "module.create_keypair.aws_key_pair.key_pair",
+		"change": {
+			"actions": [
+				"create",
+			],
+			"after": {
+				"key_name": "labtest-keypair-01",
+				"tags": {
+					"Managed": "tf-managed",
+				},
+				"tags_all": {
+					"Managed": "tf-managed",
+				},
+			},
+			"after_unknown": {
+				"arn":             true,
+				"fingerprint":     true,
+				"id":              true,
+				"key_name_prefix": true,
+				"key_pair_id":     true,
+				"key_type":        true,
+				"public_key":      true,
+				"tags":            {},
+				"tags_all":        {},
+			},
+			"before": null,
+		},
+		"deposed":        "",
+		"index":          null,
+		"mode":           "managed",
+		"module_address": "module.create_keypair",
+		"name":           "key_pair",
+		"provider_name":  "registry.terraform.io/hashicorp/aws",
+		"type":           "aws_key_pair",
+	},
+	"module.create_keypair.local_file.private_key_pem": {
+		"address": "module.create_keypair.local_file.private_key_pem",
+		"change": {
+			"actions": [
+				"create",
+			],
+			"after": {
+				"content_base64":       null,
+				"directory_permission": "0777",
+				"file_permission":      "0777",
+				"filename":             "./.key_pair/labtest-keypair-01.id_rsa",
+				"sensitive_content":    "REDACTED_SENSITIVE",
+				"source":               null,
+			},
+			"after_unknown": {
+				"content":              true,
+				"content_base64sha256": true,
+				"content_base64sha512": true,
+				"content_md5":          true,
+				"content_sha1":         true,
+				"content_sha256":       true,
+				"content_sha512":       true,
+				"id":                   true,
+			},
+			"before": null,
+		},
+		"deposed":        "",
+		"index":          null,
+		"mode":           "managed",
+		"module_address": "module.create_keypair",
+		"name":           "private_key_pem",
+		"provider_name":  "registry.terraform.io/hashicorp/local",
+		"type":           "local_file",
+	},
+	"module.create_keypair.local_file.public_key_openssh": {
+		"address": "module.create_keypair.local_file.public_key_openssh",
+		"change": {
+			"actions": [
+				"create",
+			],
+			"after": {
+				"content_base64":       null,
+				"directory_permission": "0777",
+				"file_permission":      "0777",
+				"filename":             "./.key_pair/labtest-keypair-01.id_rsa.pub",
+				"sensitive_content":    "REDACTED_SENSITIVE",
+				"source":               null,
+			},
+			"after_unknown": {
+				"content":              true,
+				"content_base64sha256": true,
+				"content_base64sha512": true,
+				"content_md5":          true,
+				"content_sha1":         true,
+				"content_sha256":       true,
+				"content_sha512":       true,
+				"id":                   true,
+			},
+			"before": null,
+		},
+		"deposed":        "",
+		"index":          null,
+		"mode":           "managed",
+		"module_address": "module.create_keypair",
+		"name":           "public_key_openssh",
+		"provider_name":  "registry.terraform.io/hashicorp/local",
+		"type":           "local_file",
+	},
+	"module.create_keypair.tls_private_key.keygen": {
+		"address": "module.create_keypair.tls_private_key.keygen",
+		"change": {
+			"actions": [
+				"create",
+			],
+			"after": {
+				"algorithm":   "RSA",
+				"ecdsa_curve": "P224",
+				"rsa_bits":    4096,
+			},
+			"after_unknown": {
+				"id": true,
+				"private_key_openssh":           true,
+				"private_key_pem":               true,
+				"private_key_pem_pkcs8":         true,
+				"public_key_fingerprint_md5":    true,
+				"public_key_fingerprint_sha256": true,
+				"public_key_openssh":            true,
+				"public_key_pem":                true,
+			},
+			"before": null,
+		},
+		"deposed":        "",
+		"index":          null,
+		"mode":           "managed",
+		"module_address": "module.create_keypair",
+		"name":           "keygen",
+		"provider_name":  "registry.terraform.io/hashicorp/tls",
+		"type":           "tls_private_key",
+	},
+	"module.create_vpcs.aws_security_group.allow_traffic": {
+		"address": "module.create_vpcs.aws_security_group.allow_traffic",
+		"change": {
+			"actions": [
+				"create",
+			],
+			"after": {
+				"description": "Allow SSH and TLS inbound traffic",
+				"egress": [
+					{
+						"cidr_blocks": [
+							"0.0.0.0/0",
+						],
+						"description":      "",
+						"from_port":        0,
+						"ipv6_cidr_blocks": [],
+						"prefix_list_ids":  [],
+						"protocol":         "-1",
+						"security_groups":  [],
+						"self":             false,
+						"to_port":          0,
+					},
+				],
+				"ingress": [
+					{
+						"cidr_blocks": [
+							"172.32.0.0/16",
+						],
+						"description":      "SSH from VPC",
+						"from_port":        22,
+						"ipv6_cidr_blocks": [],
+						"prefix_list_ids":  [],
+						"protocol":         "tcp",
+						"security_groups":  [],
+						"self":             false,
+						"to_port":          22,
+					},
+					{
+						"cidr_blocks": [
+							"172.32.0.0/16",
+						],
+						"description":      "TLS from VPC",
+						"from_port":        443,
+						"ipv6_cidr_blocks": [],
+						"prefix_list_ids":  [],
+						"protocol":         "tcp",
+						"security_groups":  [],
+						"self":             false,
+						"to_port":          443,
+					},
+				],
+				"name": "allow_traffic",
+				"revoke_rules_on_delete": false,
+				"tags": {
+					"Managed": "tf-managed",
+					"Name":    "labtest-sg-01",
+				},
+				"tags_all": {
+					"Managed": "tf-managed",
+					"Name":    "labtest-sg-01",
+				},
+				"timeouts": null,
+			},
+			"after_unknown": {
+				"arn": true,
+				"egress": [
+					{
+						"cidr_blocks": [
+							false,
+						],
+						"ipv6_cidr_blocks": [],
+						"prefix_list_ids":  [],
+						"security_groups":  [],
+					},
+				],
+				"id": true,
+				"ingress": [
+					{
+						"cidr_blocks": [
+							false,
+						],
+						"ipv6_cidr_blocks": [],
+						"prefix_list_ids":  [],
+						"security_groups":  [],
+					},
+					{
+						"cidr_blocks": [
+							false,
+						],
+						"ipv6_cidr_blocks": [],
+						"prefix_list_ids":  [],
+						"security_groups":  [],
+					},
+				],
+				"name_prefix": true,
+				"owner_id":    true,
+				"tags":        {},
+				"tags_all":    {},
+				"vpc_id":      true,
+			},
+			"before": null,
+		},
+		"deposed":        "",
+		"index":          null,
+		"mode":           "managed",
+		"module_address": "module.create_vpcs",
+		"name":           "allow_traffic",
+		"provider_name":  "registry.terraform.io/hashicorp/aws",
+		"type":           "aws_security_group",
+	},
+	"module.create_vpcs.aws_subnet.subnet_apne1c": {
+		"address": "module.create_vpcs.aws_subnet.subnet_apne1c",
+		"change": {
+			"actions": [
+				"create",
+			],
+			"after": {
+				"assign_ipv6_address_on_creation":                false,
+				"availability_zone":                              "ap-northeast-1c",
+				"cidr_block":                                     "172.32.1.0/24",
+				"customer_owned_ipv4_pool":                       null,
+				"enable_dns64":                                   false,
+				"enable_lni_at_device_index":                     null,
+				"enable_resource_name_dns_a_record_on_launch":    false,
+				"enable_resource_name_dns_aaaa_record_on_launch": false,
+				"ipv6_cidr_block":                                null,
+				"ipv6_native":                                    false,
+				"map_customer_owned_ip_on_launch":                null,
+				"map_public_ip_on_launch":                        false,
+				"outpost_arn":                                    null,
+				"tags": {
+					"Managed": "tf-managed",
+					"Name":    "labtest-subnet-01",
+				},
+				"tags_all": {
+					"Managed": "tf-managed",
+					"Name":    "labtest-subnet-01",
+				},
+				"timeouts": null,
+			},
+			"after_unknown": {
+				"arn": true,
+				"availability_zone_id": true,
+				"id": true,
+				"ipv6_cidr_block_association_id":      true,
+				"owner_id":                            true,
+				"private_dns_hostname_type_on_launch": true,
+				"tags":     {},
+				"tags_all": {},
+				"vpc_id":   true,
+			},
+			"before": null,
+		},
+		"deposed":        "",
+		"index":          null,
+		"mode":           "managed",
+		"module_address": "module.create_vpcs",
+		"name":           "subnet_apne1c",
+		"provider_name":  "registry.terraform.io/hashicorp/aws",
+		"type":           "aws_subnet",
+	},
+	"module.create_vpcs.aws_vpc.test": {
+		"address": "module.create_vpcs.aws_vpc.test",
+		"change": {
+			"actions": [
+				"create",
+			],
+			"after": {
+				"assign_generated_ipv6_cidr_block": null,
+				"cidr_block":                       "172.32.0.0/16",
+				"enable_dns_support":               true,
+				"instance_tenancy":                 "default",
+				"ipv4_ipam_pool_id":                null,
+				"ipv4_netmask_length":              null,
+				"ipv6_ipam_pool_id":                null,
+				"ipv6_netmask_length":              null,
+				"tags": {
+					"Managed": "tf-managed",
+					"Name":    "labtest-vpc-01",
+				},
+				"tags_all": {
+					"Managed": "tf-managed",
+					"Name":    "labtest-vpc-01",
+				},
+			},
+			"after_unknown": {
+				"arn": true,
+				"default_network_acl_id":               true,
+				"default_route_table_id":               true,
+				"default_security_group_id":            true,
+				"dhcp_options_id":                      true,
+				"enable_classiclink":                   true,
+				"enable_classiclink_dns_support":       true,
+				"enable_dns_hostnames":                 true,
+				"enable_network_address_usage_metrics": true,
+				"id": true,
+				"ipv6_association_id":                  true,
+				"ipv6_cidr_block":                      true,
+				"ipv6_cidr_block_network_border_group": true,
+				"main_route_table_id":                  true,
+				"owner_id":                             true,
+				"tags":                                 {},
+				"tags_all":                             {},
+			},
+			"before": null,
+		},
+		"deposed":        "",
+		"index":          null,
+		"mode":           "managed",
+		"module_address": "module.create_vpcs",
+		"name":           "test",
+		"provider_name":  "registry.terraform.io/hashicorp/aws",
+		"type":           "aws_vpc",
+	},
+}
+
+output_changes = {
+	"instance_output_all": {
+		"change": {
+			"actions": [
+				"create",
+			],
+			"after": {},
+			"after_unknown": {
+				"instance_id":      true,
+				"instance_priv_ip": true,
+			},
+			"before": null,
+		},
+		"name": "instance_output_all",
+	},
+	"keypair_output_all": {
+		"change": {
+			"actions": [
+				"create",
+			],
+			"after": {
+				"name": "labtest-keypair-01",
+			},
+			"after_unknown": false,
+			"before":        null,
+		},
+		"name": "keypair_output_all",
+	},
+	"vpcs_output_all": {
+		"change": {
+			"actions": [
+				"create",
+			],
+			"after": {},
+			"after_unknown": {
+				"sg_arn":             true,
+				"sg_id":              true,
+				"subnet_arn":         true,
+				"subnet_az_id":       true,
+				"subnet_id":          true,
+				"vpc_arn":            true,
+				"vpc_id":             true,
+				"vpc_route_table_id": true,
+			},
+			"before": null,
+		},
+		"name": "vpcs_output_all",
+	},
+}
+
+raw = {
+	"configuration": {
+		"provider_config": {
+			"aws": {
+				"expressions": {
+					"region": {
+						"constant_value": "ap-northeast-1",
+					},
+				},
+				"full_name":          "registry.terraform.io/hashicorp/aws",
+				"name":               "aws",
+				"version_constraint": "4.65.0",
+			},
+			"module.create_instance:template": {
+				"full_name":      "registry.terraform.io/hashicorp/template",
+				"module_address": "module.create_instance",
+				"name":           "template",
+			},
+			"module.create_keypair:local": {
+				"full_name":      "registry.terraform.io/hashicorp/local",
+				"module_address": "module.create_keypair",
+				"name":           "local",
+			},
+			"module.create_keypair:tls": {
+				"full_name":      "registry.terraform.io/hashicorp/tls",
+				"module_address": "module.create_keypair",
+				"name":           "tls",
+			},
+		},
+		"root_module": {
+			"module_calls": {
+				"create_instance": {
+					"expressions": {
+						"bucket_name": {
+							"references": [
+								"var.s3_bucket_name_str",
+							],
+						},
+						"instance_name_tag": {
+							"references": [
+								"var.instance_name_tag_str",
+							],
+						},
+						"instance_type": {
+							"references": [
+								"var.instance_type_str",
+							],
+						},
+						"keypair_name": {
+							"references": [
+								"module.create_keypair.name",
+								"module.create_keypair",
+							],
+						},
+						"root_volume_size": {
+							"references": [
+								"var.root_volume_size_num",
+							],
+						},
+						"root_volume_type": {
+							"references": [
+								"var.root_volume_type_str",
+							],
+						},
+						"sg_id": {
+							"references": [
+								"module.create_vpcs.sg_id",
+								"module.create_vpcs",
+							],
+						},
+						"subnet_id": {
+							"references": [
+								"module.create_vpcs.subnet_id",
+								"module.create_vpcs",
+							],
+						},
+					},
+					"module": {
+						"outputs": {
+							"instance_id": {
+								"expression": {
+									"references": [
+										"aws_instance.demo.id",
+										"aws_instance.demo",
+									],
+								},
+							},
+							"instance_priv_ip": {
+								"expression": {
+									"references": [
+										"aws_instance.demo.private_ip",
+										"aws_instance.demo",
+									],
+								},
+							},
+						},
+						"resources": [
+							{
+								"address": "aws_instance.demo",
+								"expressions": {
+									"ami": {
+										"references": [
+											"data.aws_ssm_parameter.amzn2_ami.value",
+											"data.aws_ssm_parameter.amzn2_ami",
+										],
+									},
+									"instance_initiated_shutdown_behavior": {
+										"constant_value": "terminate",
+									},
+									"instance_type": {
+										"references": [
+											"var.instance_type",
+										],
+									},
+									"key_name": {
+										"references": [
+											"var.keypair_name",
+										],
+									},
+									"root_block_device": [
+										{
+											"volume_size": {
+												"references": [
+													"var.root_volume_size",
+												],
+											},
+											"volume_type": {
+												"references": [
+													"var.root_volume_type",
+												],
+											},
+										},
+									],
+									"subnet_id": {
+										"references": [
+											"var.subnet_id",
+										],
+									},
+									"tags": {
+										"references": [
+											"var.instance_name_tag",
+										],
+									},
+									"user_data": {
+										"references": [
+											"data.template_file.user_data.rendered",
+											"data.template_file.user_data",
+										],
+									},
+									"vpc_security_group_ids": {
+										"references": [
+											"var.sg_id",
+										],
+									},
+								},
+								"mode":                "managed",
+								"name":                "demo",
+								"provider_config_key": "aws",
+								"schema_version":      1,
+								"type":                "aws_instance",
+							},
+							{
+								"address": "data.aws_ssm_parameter.amzn2_ami",
+								"expressions": {
+									"name": {
+										"constant_value": "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2",
+									},
+								},
+								"mode":                "data",
+								"name":                "amzn2_ami",
+								"provider_config_key": "aws",
+								"schema_version":      0,
+								"type":                "aws_ssm_parameter",
+							},
+							{
+								"address": "data.template_file.user_data",
+								"expressions": {
+									"template": {},
+								},
+								"mode":                "data",
+								"name":                "user_data",
+								"provider_config_key": "module.create_instance:template",
+								"schema_version":      0,
+								"type":                "template_file",
+							},
+						],
+						"variables": {
+							"bucket_name":       {},
+							"instance_name_tag": {},
+							"instance_type":     {},
+							"keypair_name":      {},
+							"root_volume_size":  {},
+							"root_volume_type":  {},
+							"sg_id":             {},
+							"subnet_id":         {},
+						},
+					},
+					"source": "./modules/aws-createEc2",
+				},
+				"create_keypair": {
+					"expressions": {
+						"keypair_name": {
+							"references": [
+								"var.keypair_name_str",
+							],
+						},
+					},
+					"module": {
+						"outputs": {
+							"name": {
+								"expression": {
+									"references": [
+										"aws_key_pair.key_pair.key_name",
+										"aws_key_pair.key_pair",
+									],
+								},
+							},
+						},
+						"resources": [
+							{
+								"address": "aws_key_pair.key_pair",
+								"depends_on": [
+									"tls_private_key.keygen",
+								],
+								"expressions": {
+									"key_name": {
+										"references": [
+											"var.keypair_name",
+										],
+									},
+									"public_key": {
+										"references": [
+											"tls_private_key.keygen.public_key_openssh",
+											"tls_private_key.keygen",
+										],
+									},
+									"tags": {
+										"constant_value": {
+											"Managed": "tf-managed",
+										},
+									},
+								},
+								"mode":                "managed",
+								"name":                "key_pair",
+								"provider_config_key": "aws",
+								"schema_version":      1,
+								"type":                "aws_key_pair",
+							},
+							{
+								"address": "local_file.private_key_pem",
+								"depends_on": [
+									"tls_private_key.keygen",
+								],
+								"expressions": {
+									"content": {
+										"references": [
+											"tls_private_key.keygen.private_key_pem",
+											"tls_private_key.keygen",
+										],
+									},
+									"filename": {
+										"references": [
+											"local.private_key_file",
+										],
+									},
+								},
+								"mode":                "managed",
+								"name":                "private_key_pem",
+								"provider_config_key": "module.create_keypair:local",
+								"provisioners": [
+									{
+										"expressions": {
+											"command": {
+												"references": [
+													"local.private_key_file",
+												],
+											},
+										},
+										"type": "local-exec",
+									},
+								],
+								"schema_version": 0,
+								"type":           "local_file",
+							},
+							{
+								"address": "local_file.public_key_openssh",
+								"depends_on": [
+									"tls_private_key.keygen",
+								],
+								"expressions": {
+									"content": {
+										"references": [
+											"tls_private_key.keygen.public_key_openssh",
+											"tls_private_key.keygen",
+										],
+									},
+									"filename": {
+										"references": [
+											"local.public_key_file",
+										],
+									},
+								},
+								"mode":                "managed",
+								"name":                "public_key_openssh",
+								"provider_config_key": "module.create_keypair:local",
+								"provisioners": [
+									{
+										"expressions": {
+											"command": {
+												"references": [
+													"local.public_key_file",
+												],
+											},
+										},
+										"type": "local-exec",
+									},
+								],
+								"schema_version": 0,
+								"type":           "local_file",
+							},
+							{
+								"address": "tls_private_key.keygen",
+								"expressions": {
+									"algorithm": {
+										"constant_value": "RSA",
+									},
+									"rsa_bits": {
+										"constant_value": 4096,
+									},
+								},
+								"mode":                "managed",
+								"name":                "keygen",
+								"provider_config_key": "module.create_keypair:tls",
+								"schema_version":      1,
+								"type":                "tls_private_key",
+							},
+						],
+						"variables": {
+							"keypair_name": {},
+						},
+					},
+					"source": "./modules/aws-createKeyPair",
+				},
+				"create_vpcs": {
+					"expressions": {
+						"subnet_az": {
+							"references": [
+								"var.subnet_az_str",
+							],
+						},
+						"subnet_cidr": {
+							"references": [
+								"var.subnet_cidr_str",
+							],
+						},
+						"subnet_name_tag": {
+							"references": [
+								"var.subnet_name_tag_str",
+							],
+						},
+						"vpc_cidr": {
+							"references": [
+								"var.vpc_cidr_str",
+							],
+						},
+						"vpc_name_tag": {
+							"references": [
+								"var.vpc_name_tag_str",
+							],
+						},
+					},
+					"module": {
+						"outputs": {
+							"sg_arn": {
+								"expression": {
+									"references": [
+										"aws_security_group.allow_traffic.arn",
+										"aws_security_group.allow_traffic",
+									],
+								},
+							},
+							"sg_id": {
+								"expression": {
+									"references": [
+										"aws_security_group.allow_traffic.id",
+										"aws_security_group.allow_traffic",
+									],
+								},
+							},
+							"subnet_arn": {
+								"expression": {
+									"references": [
+										"aws_subnet.subnet_apne1c.arn",
+										"aws_subnet.subnet_apne1c",
+									],
+								},
+							},
+							"subnet_az_id": {
+								"expression": {
+									"references": [
+										"aws_subnet.subnet_apne1c.availability_zone_id",
+										"aws_subnet.subnet_apne1c",
+									],
+								},
+							},
+							"subnet_id": {
+								"expression": {
+									"references": [
+										"aws_subnet.subnet_apne1c.id",
+										"aws_subnet.subnet_apne1c",
+									],
+								},
+							},
+							"vpc_arn": {
+								"expression": {
+									"references": [
+										"aws_vpc.test.arn",
+										"aws_vpc.test",
+									],
+								},
+							},
+							"vpc_id": {
+								"expression": {
+									"references": [
+										"aws_vpc.test.id",
+										"aws_vpc.test",
+									],
+								},
+							},
+							"vpc_route_table_id": {
+								"expression": {
+									"references": [
+										"aws_vpc.test.main_route_table_id",
+										"aws_vpc.test",
+									],
+								},
+							},
+						},
+						"resources": [
+							{
+								"address": "aws_security_group.allow_traffic",
+								"depends_on": [
+									"aws_vpc.test",
+								],
+								"expressions": {
+									"description": {
+										"constant_value": "Allow SSH and TLS inbound traffic",
+									},
+									"egress": {
+										"constant_value": [
+											{
+												"cidr_blocks": [
+													"0.0.0.0/0",
+												],
+												"description":      null,
+												"from_port":        0,
+												"ipv6_cidr_blocks": null,
+												"prefix_list_ids":  null,
+												"protocol":         "-1",
+												"security_groups":  null,
+												"self":             null,
+												"to_port":          0,
+											},
+										],
+									},
+									"ingress": {
+										"references": [
+											"aws_vpc.test.cidr_block",
+											"aws_vpc.test",
+											"aws_vpc.test.cidr_block",
+											"aws_vpc.test",
+										],
+									},
+									"name": {
+										"constant_value": "allow_traffic",
+									},
+									"tags": {
+										"constant_value": {
+											"Managed": "tf-managed",
+											"Name":    "labtest-sg-01",
+										},
+									},
+									"vpc_id": {
+										"references": [
+											"aws_vpc.test.id",
+											"aws_vpc.test",
+										],
+									},
+								},
+								"mode":                "managed",
+								"name":                "allow_traffic",
+								"provider_config_key": "aws",
+								"schema_version":      1,
+								"type":                "aws_security_group",
+							},
+							{
+								"address": "aws_subnet.subnet_apne1c",
+								"depends_on": [
+									"aws_vpc.test",
+								],
+								"expressions": {
+									"availability_zone": {
+										"references": [
+											"var.subnet_az",
+										],
+									},
+									"cidr_block": {
+										"references": [
+											"var.subnet_cidr",
+										],
+									},
+									"tags": {
+										"references": [
+											"var.subnet_name_tag",
+										],
+									},
+									"vpc_id": {
+										"references": [
+											"aws_vpc.test.id",
+											"aws_vpc.test",
+										],
+									},
+								},
+								"mode":                "managed",
+								"name":                "subnet_apne1c",
+								"provider_config_key": "aws",
+								"schema_version":      1,
+								"type":                "aws_subnet",
+							},
+							{
+								"address": "aws_vpc.test",
+								"expressions": {
+									"cidr_block": {
+										"references": [
+											"var.vpc_cidr",
+										],
+									},
+									"tags": {
+										"references": [
+											"var.vpc_name_tag",
+										],
+									},
+								},
+								"mode":                "managed",
+								"name":                "test",
+								"provider_config_key": "aws",
+								"schema_version":      1,
+								"type":                "aws_vpc",
+							},
+						],
+						"variables": {
+							"subnet_az":       {},
+							"subnet_cidr":     {},
+							"subnet_name_tag": {},
+							"vpc_cidr":        {},
+							"vpc_name_tag":    {},
+						},
+					},
+					"source": "./modules/aws-createVpcs/",
+				},
+			},
+			"outputs": {
+				"instance_output_all": {
+					"expression": {
+						"references": [
+							"module.create_instance",
+						],
+					},
+				},
+				"keypair_output_all": {
+					"expression": {
+						"references": [
+							"module.create_keypair",
+						],
+					},
+				},
+				"vpcs_output_all": {
+					"expression": {
+						"references": [
+							"module.create_vpcs",
+						],
+					},
+				},
+			},
+			"variables": {
+				"instance_name_tag_str": {},
+				"instance_type_str":     {},
+				"keypair_name_str":      {},
+				"root_volume_size_num":  {},
+				"root_volume_type_str":  {},
+				"s3_bucket_name_str":    {},
+				"subnet_az_str":         {},
+				"subnet_cidr_str":       {},
+				"subnet_name_tag_str":   {},
+				"vpc_cidr_str":          {},
+				"vpc_name_tag_str":      {},
+			},
+		},
+	},
+	"format_version": "1.2",
+	"output_changes": {
+		"instance_output_all": {
+			"actions": [
+				"create",
+			],
+			"after":           {},
+			"after_sensitive": false,
+			"after_unknown": {
+				"instance_id":      true,
+				"instance_priv_ip": true,
+			},
+			"before":           null,
+			"before_sensitive": false,
+		},
+		"keypair_output_all": {
+			"actions": [
+				"create",
+			],
+			"after": {
+				"name": "labtest-keypair-01",
+			},
+			"after_sensitive":  false,
+			"after_unknown":    false,
+			"before":           null,
+			"before_sensitive": false,
+		},
+		"vpcs_output_all": {
+			"actions": [
+				"create",
+			],
+			"after":           {},
+			"after_sensitive": false,
+			"after_unknown": {
+				"sg_arn":             true,
+				"sg_id":              true,
+				"subnet_arn":         true,
+				"subnet_az_id":       true,
+				"subnet_id":          true,
+				"vpc_arn":            true,
+				"vpc_id":             true,
+				"vpc_route_table_id": true,
+			},
+			"before":           null,
+			"before_sensitive": false,
+		},
+	},
+	"planned_values": {
+		"outputs": {
+			"instance_output_all": {
+				"sensitive": false,
+			},
+			"keypair_output_all": {
+				"sensitive": false,
+				"value": {
+					"name": "labtest-keypair-01",
+				},
+			},
+			"vpcs_output_all": {
+				"sensitive": false,
+			},
+		},
+		"root_module": {
+			"child_modules": [
+				{
+					"address": "module.create_instance",
+					"resources": [
+						{
+							"address":        "module.create_instance.aws_instance.demo",
+							"mode":           "managed",
+							"name":           "demo",
+							"provider_name":  "registry.terraform.io/hashicorp/aws",
+							"schema_version": 1,
+							"sensitive_values": {
+								"ami": true,
+								"capacity_reservation_specification": [],
+								"credit_specification":               [],
+								"ebs_block_device":                   [],
+								"enclave_options":                    [],
+								"ephemeral_block_device":             [],
+								"ipv6_addresses":                     [],
+								"launch_template":                    [],
+								"maintenance_options":                [],
+								"metadata_options":                   [],
+								"network_interface":                  [],
+								"private_dns_name_options":           [],
+								"root_block_device": [
+									{},
+								],
+								"secondary_private_ips":  [],
+								"security_groups":        [],
+								"tags":                   {},
+								"tags_all":               {},
+								"vpc_security_group_ids": [],
+							},
+							"type": "aws_instance",
+							"values": {
+								"ami": "REDACTED_SENSITIVE",
+								"credit_specification":                 [],
+								"get_password_data":                    false,
+								"hibernation":                          null,
+								"instance_initiated_shutdown_behavior": "terminate",
+								"instance_type":                        "t2.micro",
+								"key_name":                             "labtest-keypair-01",
+								"launch_template":                      [],
+								"root_block_device": [
+									{
+										"delete_on_termination": true,
+										"tags":                  null,
+										"volume_size":           10,
+										"volume_type":           "gp2",
+									},
+								],
+								"source_dest_check": true,
+								"tags": {
+									"Managed": "tf-managed",
+									"Name":    "labtest-username-02",
+								},
+								"tags_all": {
+									"Managed": "tf-managed",
+									"Name":    "labtest-username-02",
+								},
+								"timeouts":                    null,
+								"user_data":                   "5722471ee3cb78c8e017e48eb8bb72be2554e4e4",
+								"user_data_replace_on_change": false,
+								"volume_tags":                 null,
+							},
+						},
+					],
+				},
+				{
+					"address": "module.create_keypair",
+					"resources": [
+						{
+							"address":        "module.create_keypair.aws_key_pair.key_pair",
+							"mode":           "managed",
+							"name":           "key_pair",
+							"provider_name":  "registry.terraform.io/hashicorp/aws",
+							"schema_version": 1,
+							"sensitive_values": {
+								"tags":     {},
+								"tags_all": {},
+							},
+							"type": "aws_key_pair",
+							"values": {
+								"key_name": "labtest-keypair-01",
+								"tags": {
+									"Managed": "tf-managed",
+								},
+								"tags_all": {
+									"Managed": "tf-managed",
+								},
+							},
+						},
+						{
+							"address":        "module.create_keypair.local_file.private_key_pem",
+							"mode":           "managed",
+							"name":           "private_key_pem",
+							"provider_name":  "registry.terraform.io/hashicorp/local",
+							"schema_version": 0,
+							"sensitive_values": {
+								"content": true,
+							},
+							"type": "local_file",
+							"values": {
+								"content_base64":       null,
+								"directory_permission": "0777",
+								"file_permission":      "0777",
+								"filename":             "./.key_pair/labtest-keypair-01.id_rsa",
+								"sensitive_content":    "REDACTED_SENSITIVE",
+								"source":               null,
+							},
+						},
+						{
+							"address":          "module.create_keypair.local_file.public_key_openssh",
+							"mode":             "managed",
+							"name":             "public_key_openssh",
+							"provider_name":    "registry.terraform.io/hashicorp/local",
+							"schema_version":   0,
+							"sensitive_values": {},
+							"type":             "local_file",
+							"values": {
+								"content_base64":       null,
+								"directory_permission": "0777",
+								"file_permission":      "0777",
+								"filename":             "./.key_pair/labtest-keypair-01.id_rsa.pub",
+								"sensitive_content":    "REDACTED_SENSITIVE",
+								"source":               null,
+							},
+						},
+						{
+							"address":          "module.create_keypair.tls_private_key.keygen",
+							"mode":             "managed",
+							"name":             "keygen",
+							"provider_name":    "registry.terraform.io/hashicorp/tls",
+							"schema_version":   1,
+							"sensitive_values": {},
+							"type":             "tls_private_key",
+							"values": {
+								"algorithm":   "RSA",
+								"ecdsa_curve": "P224",
+								"rsa_bits":    4096,
+							},
+						},
+					],
+				},
+				{
+					"address": "module.create_vpcs",
+					"resources": [
+						{
+							"address":        "module.create_vpcs.aws_security_group.allow_traffic",
+							"mode":           "managed",
+							"name":           "allow_traffic",
+							"provider_name":  "registry.terraform.io/hashicorp/aws",
+							"schema_version": 1,
+							"sensitive_values": {
+								"egress": [
+									{
+										"cidr_blocks": [
+											false,
+										],
+										"ipv6_cidr_blocks": [],
+										"prefix_list_ids":  [],
+										"security_groups":  [],
+									},
+								],
+								"ingress": [
+									{
+										"cidr_blocks": [
+											false,
+										],
+										"ipv6_cidr_blocks": [],
+										"prefix_list_ids":  [],
+										"security_groups":  [],
+									},
+									{
+										"cidr_blocks": [
+											false,
+										],
+										"ipv6_cidr_blocks": [],
+										"prefix_list_ids":  [],
+										"security_groups":  [],
+									},
+								],
+								"tags":     {},
+								"tags_all": {},
+							},
+							"type": "aws_security_group",
+							"values": {
+								"description": "Allow SSH and TLS inbound traffic",
+								"egress": [
+									{
+										"cidr_blocks": [
+											"0.0.0.0/0",
+										],
+										"description":      "",
+										"from_port":        0,
+										"ipv6_cidr_blocks": [],
+										"prefix_list_ids":  [],
+										"protocol":         "-1",
+										"security_groups":  [],
+										"self":             false,
+										"to_port":          0,
+									},
+								],
+								"ingress": [
+									{
+										"cidr_blocks": [
+											"172.32.0.0/16",
+										],
+										"description":      "SSH from VPC",
+										"from_port":        22,
+										"ipv6_cidr_blocks": [],
+										"prefix_list_ids":  [],
+										"protocol":         "tcp",
+										"security_groups":  [],
+										"self":             false,
+										"to_port":          22,
+									},
+									{
+										"cidr_blocks": [
+											"172.32.0.0/16",
+										],
+										"description":      "TLS from VPC",
+										"from_port":        443,
+										"ipv6_cidr_blocks": [],
+										"prefix_list_ids":  [],
+										"protocol":         "tcp",
+										"security_groups":  [],
+										"self":             false,
+										"to_port":          443,
+									},
+								],
+								"name": "allow_traffic",
+								"revoke_rules_on_delete": false,
+								"tags": {
+									"Managed": "tf-managed",
+									"Name":    "labtest-sg-01",
+								},
+								"tags_all": {
+									"Managed": "tf-managed",
+									"Name":    "labtest-sg-01",
+								},
+								"timeouts": null,
+							},
+						},
+						{
+							"address":        "module.create_vpcs.aws_subnet.subnet_apne1c",
+							"mode":           "managed",
+							"name":           "subnet_apne1c",
+							"provider_name":  "registry.terraform.io/hashicorp/aws",
+							"schema_version": 1,
+							"sensitive_values": {
+								"tags":     {},
+								"tags_all": {},
+							},
+							"type": "aws_subnet",
+							"values": {
+								"assign_ipv6_address_on_creation":                false,
+								"availability_zone":                              "ap-northeast-1c",
+								"cidr_block":                                     "172.32.1.0/24",
+								"customer_owned_ipv4_pool":                       null,
+								"enable_dns64":                                   false,
+								"enable_lni_at_device_index":                     null,
+								"enable_resource_name_dns_a_record_on_launch":    false,
+								"enable_resource_name_dns_aaaa_record_on_launch": false,
+								"ipv6_cidr_block":                                null,
+								"ipv6_native":                                    false,
+								"map_customer_owned_ip_on_launch":                null,
+								"map_public_ip_on_launch":                        false,
+								"outpost_arn":                                    null,
+								"tags": {
+									"Managed": "tf-managed",
+									"Name":    "labtest-subnet-01",
+								},
+								"tags_all": {
+									"Managed": "tf-managed",
+									"Name":    "labtest-subnet-01",
+								},
+								"timeouts": null,
+							},
+						},
+						{
+							"address":        "module.create_vpcs.aws_vpc.test",
+							"mode":           "managed",
+							"name":           "test",
+							"provider_name":  "registry.terraform.io/hashicorp/aws",
+							"schema_version": 1,
+							"sensitive_values": {
+								"tags":     {},
+								"tags_all": {},
+							},
+							"type": "aws_vpc",
+							"values": {
+								"assign_generated_ipv6_cidr_block": null,
+								"cidr_block":                       "172.32.0.0/16",
+								"enable_dns_support":               true,
+								"instance_tenancy":                 "default",
+								"ipv4_ipam_pool_id":                null,
+								"ipv4_netmask_length":              null,
+								"ipv6_ipam_pool_id":                null,
+								"ipv6_netmask_length":              null,
+								"tags": {
+									"Managed": "tf-managed",
+									"Name":    "labtest-vpc-01",
+								},
+								"tags_all": {
+									"Managed": "tf-managed",
+									"Name":    "labtest-vpc-01",
+								},
+							},
+						},
+					],
+				},
+			],
+		},
+	},
+	"prior_state": {
+		"format_version":    "1.0",
+		"terraform_version": "1.5.2",
+		"values": {
+			"outputs": {
+				"keypair_output_all": {
+					"sensitive": false,
+					"value": {
+						"name": "labtest-keypair-01",
+					},
+				},
+			},
+			"root_module": {
+				"child_modules": [
+					{
+						"address": "module.create_instance",
+						"resources": [
+							{
+								"address":        "module.create_instance.data.aws_ssm_parameter.amzn2_ami",
+								"mode":           "data",
+								"name":           "amzn2_ami",
+								"provider_name":  "registry.terraform.io/hashicorp/aws",
+								"schema_version": 0,
+								"sensitive_values": {
+									"value": true,
+								},
+								"type": "aws_ssm_parameter",
+								"values": {
+									"arn":             "arn:aws:ssm:ap-northeast-1::parameter/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2",
+									"id":              "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2",
+									"name":            "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2",
+									"type":            "String",
+									"value":           "ami-0fb2e8f28f4a31399",
+									"version":         94,
+									"with_decryption": true,
+								},
+							},
+							{
+								"address":          "module.create_instance.data.template_file.user_data",
+								"mode":             "data",
+								"name":             "user_data",
+								"provider_name":    "registry.terraform.io/hashicorp/template",
+								"schema_version":   0,
+								"sensitive_values": {},
+								"type":             "template_file",
+								"values": {
+									"filename": null,
+									"id":       "18334d18017b8c2ecd42b48096272ac2bb5f1d3d431fefa0a2d0f578554243e6",
+									"rendered": "#!/bin/bash\nyum update -y",
+									"template": "#!/bin/bash\nyum update -y",
+									"vars":     null,
+								},
+							},
+						],
+					},
+				],
+			},
+		},
+	},
+	"relevant_attributes": [
+		{
+			"attribute": [
+				"value",
+			],
+			"resource": "module.create_instance.data.aws_ssm_parameter.amzn2_ami",
+		},
+		{
+			"attribute": [
+				"key_name",
+			],
+			"resource": "module.create_keypair.aws_key_pair.key_pair",
+		},
+		{
+			"attribute": [
+				"arn",
+			],
+			"resource": "module.create_vpcs.aws_subnet.subnet_apne1c",
+		},
+		{
+			"attribute": [
+				"arn",
+			],
+			"resource": "module.create_vpcs.aws_security_group.allow_traffic",
+		},
+		{
+			"attribute": [
+				"private_key_pem",
+			],
+			"resource": "module.create_keypair.tls_private_key.keygen",
+		},
+		{
+			"attribute": [
+				"id",
+			],
+			"resource": "module.create_vpcs.aws_subnet.subnet_apne1c",
+		},
+		{
+			"attribute": [
+				"main_route_table_id",
+			],
+			"resource": "module.create_vpcs.aws_vpc.test",
+		},
+		{
+			"attribute": [
+				"availability_zone_id",
+			],
+			"resource": "module.create_vpcs.aws_subnet.subnet_apne1c",
+		},
+		{
+			"attribute": [
+				"id",
+			],
+			"resource": "module.create_vpcs.aws_security_group.allow_traffic",
+		},
+		{
+			"attribute": [
+				"arn",
+			],
+			"resource": "module.create_vpcs.aws_vpc.test",
+		},
+		{
+			"attribute": [
+				"id",
+			],
+			"resource": "module.create_instance.aws_instance.demo",
+		},
+		{
+			"attribute": [
+				"private_ip",
+			],
+			"resource": "module.create_instance.aws_instance.demo",
+		},
+		{
+			"attribute": [
+				"public_key_openssh",
+			],
+			"resource": "module.create_keypair.tls_private_key.keygen",
+		},
+		{
+			"attribute": [
+				"id",
+			],
+			"resource": "module.create_vpcs.aws_vpc.test",
+		},
+		{
+			"attribute": [
+				"cidr_block",
+			],
+			"resource": "module.create_vpcs.aws_vpc.test",
+		},
+		{
+			"attribute": [
+				"rendered",
+			],
+			"resource": "module.create_instance.data.template_file.user_data",
+		},
+	],
+	"resource_changes": [
+		{
+			"address": "module.create_instance.aws_instance.demo",
+			"change": {
+				"actions": [
+					"create",
+				],
+				"after": {
+					"ami": "REDACTED_SENSITIVE",
+					"credit_specification":                 [],
+					"get_password_data":                    false,
+					"hibernation":                          null,
+					"instance_initiated_shutdown_behavior": "terminate",
+					"instance_type":                        "t2.micro",
+					"key_name":                             "labtest-keypair-01",
+					"launch_template":                      [],
+					"root_block_device": [
+						{
+							"delete_on_termination": true,
+							"tags":                  null,
+							"volume_size":           10,
+							"volume_type":           "gp2",
+						},
+					],
+					"source_dest_check": true,
+					"tags": {
+						"Managed": "tf-managed",
+						"Name":    "labtest-username-02",
+					},
+					"tags_all": {
+						"Managed": "tf-managed",
+						"Name":    "labtest-username-02",
+					},
+					"timeouts":                    null,
+					"user_data":                   "5722471ee3cb78c8e017e48eb8bb72be2554e4e4",
+					"user_data_replace_on_change": false,
+					"volume_tags":                 null,
+				},
+				"after_sensitive": {
+					"ami": true,
+					"capacity_reservation_specification": [],
+					"credit_specification":               [],
+					"ebs_block_device":                   [],
+					"enclave_options":                    [],
+					"ephemeral_block_device":             [],
+					"ipv6_addresses":                     [],
+					"launch_template":                    [],
+					"maintenance_options":                [],
+					"metadata_options":                   [],
+					"network_interface":                  [],
+					"private_dns_name_options":           [],
+					"root_block_device": [
+						{},
+					],
+					"secondary_private_ips":  [],
+					"security_groups":        [],
+					"tags":                   {},
+					"tags_all":               {},
+					"vpc_security_group_ids": [],
+				},
+				"after_unknown": {
+					"arn": true,
+					"associate_public_ip_address":        true,
+					"availability_zone":                  true,
+					"capacity_reservation_specification": true,
+					"cpu_core_count":                     true,
+					"cpu_threads_per_core":               true,
+					"credit_specification":               [],
+					"disable_api_stop":                   true,
+					"disable_api_termination":            true,
+					"ebs_block_device":                   true,
+					"ebs_optimized":                      true,
+					"enclave_options":                    true,
+					"ephemeral_block_device":             true,
+					"host_id":                            true,
+					"host_resource_group_arn":            true,
+					"iam_instance_profile":               true,
+					"id":                           true,
+					"instance_state":               true,
+					"ipv6_address_count":           true,
+					"ipv6_addresses":               true,
+					"launch_template":              [],
+					"maintenance_options":          true,
+					"metadata_options":             true,
+					"monitoring":                   true,
+					"network_interface":            true,
+					"outpost_arn":                  true,
+					"password_data":                true,
+					"placement_group":              true,
+					"placement_partition_number":   true,
+					"primary_network_interface_id": true,
+					"private_dns":                  true,
+					"private_dns_name_options":     true,
+					"private_ip":                   true,
+					"public_dns":                   true,
+					"public_ip":                    true,
+					"root_block_device": [
+						{
+							"device_name": true,
+							"encrypted":   true,
+							"iops":        true,
+							"kms_key_id":  true,
+							"throughput":  true,
+							"volume_id":   true,
+						},
+					],
+					"secondary_private_ips":  true,
+					"security_groups":        true,
+					"subnet_id":              true,
+					"tags":                   {},
+					"tags_all":               {},
+					"tenancy":                true,
+					"user_data_base64":       true,
+					"vpc_security_group_ids": true,
+				},
+				"before":           null,
+				"before_sensitive": false,
+			},
+			"mode":           "managed",
+			"module_address": "module.create_instance",
+			"name":           "demo",
+			"provider_name":  "registry.terraform.io/hashicorp/aws",
+			"type":           "aws_instance",
+		},
+		{
+			"address": "module.create_keypair.aws_key_pair.key_pair",
+			"change": {
+				"actions": [
+					"create",
+				],
+				"after": {
+					"key_name": "labtest-keypair-01",
+					"tags": {
+						"Managed": "tf-managed",
+					},
+					"tags_all": {
+						"Managed": "tf-managed",
+					},
+				},
+				"after_sensitive": {
+					"tags":     {},
+					"tags_all": {},
+				},
+				"after_unknown": {
+					"arn":             true,
+					"fingerprint":     true,
+					"id":              true,
+					"key_name_prefix": true,
+					"key_pair_id":     true,
+					"key_type":        true,
+					"public_key":      true,
+					"tags":            {},
+					"tags_all":        {},
+				},
+				"before":           null,
+				"before_sensitive": false,
+			},
+			"mode":           "managed",
+			"module_address": "module.create_keypair",
+			"name":           "key_pair",
+			"provider_name":  "registry.terraform.io/hashicorp/aws",
+			"type":           "aws_key_pair",
+		},
+		{
+			"address": "module.create_keypair.local_file.private_key_pem",
+			"change": {
+				"actions": [
+					"create",
+				],
+				"after": {
+					"content_base64":       null,
+					"directory_permission": "0777",
+					"file_permission":      "0777",
+					"filename":             "./.key_pair/labtest-keypair-01.id_rsa",
+					"sensitive_content":    "REDACTED_SENSITIVE",
+					"source":               null,
+				},
+				"after_sensitive": {
+					"content":           true,
+					"sensitive_content": true,
+				},
+				"after_unknown": {
+					"content":              true,
+					"content_base64sha256": true,
+					"content_base64sha512": true,
+					"content_md5":          true,
+					"content_sha1":         true,
+					"content_sha256":       true,
+					"content_sha512":       true,
+					"id":                   true,
+				},
+				"before":           null,
+				"before_sensitive": false,
+			},
+			"mode":           "managed",
+			"module_address": "module.create_keypair",
+			"name":           "private_key_pem",
+			"provider_name":  "registry.terraform.io/hashicorp/local",
+			"type":           "local_file",
+		},
+		{
+			"address": "module.create_keypair.local_file.public_key_openssh",
+			"change": {
+				"actions": [
+					"create",
+				],
+				"after": {
+					"content_base64":       null,
+					"directory_permission": "0777",
+					"file_permission":      "0777",
+					"filename":             "./.key_pair/labtest-keypair-01.id_rsa.pub",
+					"sensitive_content":    "REDACTED_SENSITIVE",
+					"source":               null,
+				},
+				"after_sensitive": {
+					"sensitive_content": true,
+				},
+				"after_unknown": {
+					"content":              true,
+					"content_base64sha256": true,
+					"content_base64sha512": true,
+					"content_md5":          true,
+					"content_sha1":         true,
+					"content_sha256":       true,
+					"content_sha512":       true,
+					"id":                   true,
+				},
+				"before":           null,
+				"before_sensitive": false,
+			},
+			"mode":           "managed",
+			"module_address": "module.create_keypair",
+			"name":           "public_key_openssh",
+			"provider_name":  "registry.terraform.io/hashicorp/local",
+			"type":           "local_file",
+		},
+		{
+			"address": "module.create_keypair.tls_private_key.keygen",
+			"change": {
+				"actions": [
+					"create",
+				],
+				"after": {
+					"algorithm":   "RSA",
+					"ecdsa_curve": "P224",
+					"rsa_bits":    4096,
+				},
+				"after_sensitive": {
+					"private_key_openssh":   true,
+					"private_key_pem":       true,
+					"private_key_pem_pkcs8": true,
+				},
+				"after_unknown": {
+					"id": true,
+					"private_key_openssh":           true,
+					"private_key_pem":               true,
+					"private_key_pem_pkcs8":         true,
+					"public_key_fingerprint_md5":    true,
+					"public_key_fingerprint_sha256": true,
+					"public_key_openssh":            true,
+					"public_key_pem":                true,
+				},
+				"before":           null,
+				"before_sensitive": false,
+			},
+			"mode":           "managed",
+			"module_address": "module.create_keypair",
+			"name":           "keygen",
+			"provider_name":  "registry.terraform.io/hashicorp/tls",
+			"type":           "tls_private_key",
+		},
+		{
+			"address": "module.create_vpcs.aws_security_group.allow_traffic",
+			"change": {
+				"actions": [
+					"create",
+				],
+				"after": {
+					"description": "Allow SSH and TLS inbound traffic",
+					"egress": [
+						{
+							"cidr_blocks": [
+								"0.0.0.0/0",
+							],
+							"description":      "",
+							"from_port":        0,
+							"ipv6_cidr_blocks": [],
+							"prefix_list_ids":  [],
+							"protocol":         "-1",
+							"security_groups":  [],
+							"self":             false,
+							"to_port":          0,
+						},
+					],
+					"ingress": [
+						{
+							"cidr_blocks": [
+								"172.32.0.0/16",
+							],
+							"description":      "SSH from VPC",
+							"from_port":        22,
+							"ipv6_cidr_blocks": [],
+							"prefix_list_ids":  [],
+							"protocol":         "tcp",
+							"security_groups":  [],
+							"self":             false,
+							"to_port":          22,
+						},
+						{
+							"cidr_blocks": [
+								"172.32.0.0/16",
+							],
+							"description":      "TLS from VPC",
+							"from_port":        443,
+							"ipv6_cidr_blocks": [],
+							"prefix_list_ids":  [],
+							"protocol":         "tcp",
+							"security_groups":  [],
+							"self":             false,
+							"to_port":          443,
+						},
+					],
+					"name": "allow_traffic",
+					"revoke_rules_on_delete": false,
+					"tags": {
+						"Managed": "tf-managed",
+						"Name":    "labtest-sg-01",
+					},
+					"tags_all": {
+						"Managed": "tf-managed",
+						"Name":    "labtest-sg-01",
+					},
+					"timeouts": null,
+				},
+				"after_sensitive": {
+					"egress": [
+						{
+							"cidr_blocks": [
+								false,
+							],
+							"ipv6_cidr_blocks": [],
+							"prefix_list_ids":  [],
+							"security_groups":  [],
+						},
+					],
+					"ingress": [
+						{
+							"cidr_blocks": [
+								false,
+							],
+							"ipv6_cidr_blocks": [],
+							"prefix_list_ids":  [],
+							"security_groups":  [],
+						},
+						{
+							"cidr_blocks": [
+								false,
+							],
+							"ipv6_cidr_blocks": [],
+							"prefix_list_ids":  [],
+							"security_groups":  [],
+						},
+					],
+					"tags":     {},
+					"tags_all": {},
+				},
+				"after_unknown": {
+					"arn": true,
+					"egress": [
+						{
+							"cidr_blocks": [
+								false,
+							],
+							"ipv6_cidr_blocks": [],
+							"prefix_list_ids":  [],
+							"security_groups":  [],
+						},
+					],
+					"id": true,
+					"ingress": [
+						{
+							"cidr_blocks": [
+								false,
+							],
+							"ipv6_cidr_blocks": [],
+							"prefix_list_ids":  [],
+							"security_groups":  [],
+						},
+						{
+							"cidr_blocks": [
+								false,
+							],
+							"ipv6_cidr_blocks": [],
+							"prefix_list_ids":  [],
+							"security_groups":  [],
+						},
+					],
+					"name_prefix": true,
+					"owner_id":    true,
+					"tags":        {},
+					"tags_all":    {},
+					"vpc_id":      true,
+				},
+				"before":           null,
+				"before_sensitive": false,
+			},
+			"mode":           "managed",
+			"module_address": "module.create_vpcs",
+			"name":           "allow_traffic",
+			"provider_name":  "registry.terraform.io/hashicorp/aws",
+			"type":           "aws_security_group",
+		},
+		{
+			"address": "module.create_vpcs.aws_subnet.subnet_apne1c",
+			"change": {
+				"actions": [
+					"create",
+				],
+				"after": {
+					"assign_ipv6_address_on_creation":                false,
+					"availability_zone":                              "ap-northeast-1c",
+					"cidr_block":                                     "172.32.1.0/24",
+					"customer_owned_ipv4_pool":                       null,
+					"enable_dns64":                                   false,
+					"enable_lni_at_device_index":                     null,
+					"enable_resource_name_dns_a_record_on_launch":    false,
+					"enable_resource_name_dns_aaaa_record_on_launch": false,
+					"ipv6_cidr_block":                                null,
+					"ipv6_native":                                    false,
+					"map_customer_owned_ip_on_launch":                null,
+					"map_public_ip_on_launch":                        false,
+					"outpost_arn":                                    null,
+					"tags": {
+						"Managed": "tf-managed",
+						"Name":    "labtest-subnet-01",
+					},
+					"tags_all": {
+						"Managed": "tf-managed",
+						"Name":    "labtest-subnet-01",
+					},
+					"timeouts": null,
+				},
+				"after_sensitive": {
+					"tags":     {},
+					"tags_all": {},
+				},
+				"after_unknown": {
+					"arn": true,
+					"availability_zone_id": true,
+					"id": true,
+					"ipv6_cidr_block_association_id":      true,
+					"owner_id":                            true,
+					"private_dns_hostname_type_on_launch": true,
+					"tags":     {},
+					"tags_all": {},
+					"vpc_id":   true,
+				},
+				"before":           null,
+				"before_sensitive": false,
+			},
+			"mode":           "managed",
+			"module_address": "module.create_vpcs",
+			"name":           "subnet_apne1c",
+			"provider_name":  "registry.terraform.io/hashicorp/aws",
+			"type":           "aws_subnet",
+		},
+		{
+			"address": "module.create_vpcs.aws_vpc.test",
+			"change": {
+				"actions": [
+					"create",
+				],
+				"after": {
+					"assign_generated_ipv6_cidr_block": null,
+					"cidr_block":                       "172.32.0.0/16",
+					"enable_dns_support":               true,
+					"instance_tenancy":                 "default",
+					"ipv4_ipam_pool_id":                null,
+					"ipv4_netmask_length":              null,
+					"ipv6_ipam_pool_id":                null,
+					"ipv6_netmask_length":              null,
+					"tags": {
+						"Managed": "tf-managed",
+						"Name":    "labtest-vpc-01",
+					},
+					"tags_all": {
+						"Managed": "tf-managed",
+						"Name":    "labtest-vpc-01",
+					},
+				},
+				"after_sensitive": {
+					"tags":     {},
+					"tags_all": {},
+				},
+				"after_unknown": {
+					"arn": true,
+					"default_network_acl_id":               true,
+					"default_route_table_id":               true,
+					"default_security_group_id":            true,
+					"dhcp_options_id":                      true,
+					"enable_classiclink":                   true,
+					"enable_classiclink_dns_support":       true,
+					"enable_dns_hostnames":                 true,
+					"enable_network_address_usage_metrics": true,
+					"id": true,
+					"ipv6_association_id":                  true,
+					"ipv6_cidr_block":                      true,
+					"ipv6_cidr_block_network_border_group": true,
+					"main_route_table_id":                  true,
+					"owner_id":                             true,
+					"tags":                                 {},
+					"tags_all":                             {},
+				},
+				"before":           null,
+				"before_sensitive": false,
+			},
+			"mode":           "managed",
+			"module_address": "module.create_vpcs",
+			"name":           "test",
+			"provider_name":  "registry.terraform.io/hashicorp/aws",
+			"type":           "aws_vpc",
+		},
+	],
+	"terraform_version": "1.5.2",
+	"variables": {
+		"instance_name_tag_str": {
+			"value": "labtest-username-02",
+		},
+		"instance_type_str": {
+			"value": "t2.micro",
+		},
+		"keypair_name_str": {
+			"value": "labtest-keypair-01",
+		},
+		"root_volume_size_num": {
+			"value": 10,
+		},
+		"root_volume_type_str": {
+			"value": "gp2",
+		},
+		"s3_bucket_name_str": {
+			"value": "labtest-backend-tfstate",
+		},
+		"subnet_az_str": {
+			"value": "ap-northeast-1c",
+		},
+		"subnet_cidr_str": {
+			"value": "172.32.1.0/24",
+		},
+		"subnet_name_tag_str": {
+			"value": "labtest-subnet-01",
+		},
+		"vpc_cidr_str": {
+			"value": "172.32.0.0/16",
+		},
+		"vpc_name_tag_str": {
+			"value": "labtest-vpc-01",
+		},
+	},
+}
