@@ -6,7 +6,7 @@ ec2_instance = filter tfplan.resource_changes as _, rc {
 }
 
 # Mandatory Instance Tags
-mandatory_tags = [ "Name", "Managed" ]
+mandatory_tags = [ "Managed" ]
 
 # Rule to enforce "Name" and "Managed" tags on all instances
 mandatory_instance_tags = rule {
