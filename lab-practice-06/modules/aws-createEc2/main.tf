@@ -49,7 +49,7 @@ resource "aws_instance" "demo" {
   instance_initiated_shutdown_behavior = "terminate"
   tags = {
     Name                 = var.instance_name_tag
-    Managed              = "tf-managed"
+    # Managed              = "tf-managed"
   }
 
 }
