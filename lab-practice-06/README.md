@@ -1,18 +1,22 @@
-# Terraform CloudのCLI-driven WorkflowによるEC2デプロイ
+# Terraform CloudのVCS-driven WorkflowによるEC2デプロイ(Policy Set設定)
 
 [EC2デプロイ手順](#ec2デプロイ手順)  
 - [terraform構成](#terraform構成)  
 - [1. 事前準備](#1-事前準備)  
-  - [1.1. Terraform CloudのAPI Token発行](#11-terraform-cloudのapi-token発行)
-  - [1.2. Workspace新規作成](#12-workspace新規作成)
-  - [1.3. Workspace設定](#13-workspace設定)
-- [2. terraform実行](#2-terraform実行)
-  - [2.1. Terraform Cloudでログイン](#21-terraform-cloudでログイン)
-  - [2.2. provider設定](#22-provider設定)
-  - [2.3. 初期化](#23-初期化)
-  - [2.4. デバッグ](#24-デバッグ)
-  - [2.5. 適用](#25-適用)
-
+  - [1.1. Workspace新規作成](#11-workspace新規作成)
+  - [1.2. Workspace設定](#12-workspace設定)
+  - [1.3. Variables設定](#13-variables設定)
+- [2. Policy定義ファイル準備](#2-policy定義ファイル準備)
+  - [2.1. Sentinel Mock Data取得](#21-sentinel-mock-data取得)
+  - [2.2. Policy定義ファイルの作成](#22-policy定義ファイルの作成)
+  - [2.3. Mock Data修正](#23-mock-data修正)
+  - [2.4. Policyの検証](#24-policyの検証)
+- [3. Policy Set作成](#3-policy-set作成)
+  - [3.1. Policy Set作成](#31-policy-set作成)
+  - [3.2. Policy作成](#32-policy作成)
+- [4. Terraform CloudからEC2デプロイ](#4-terraform-cloudからec2デプロイ)
+  - [4.1. 適用](#41-適用)
+  
 ## terraform構成
 
 |Directory|Module|Description|
@@ -23,240 +27,171 @@
 
 
 ## 1. 事前準備
+### 1.1. Workspace新規作成
+ 
+※既存Workspaceを利用する場合は本手順をスキップして「1.2. Workspace設定」へ進む  
 
-### 1.1. Terraform CloudのAPI Token発行
+- Terraform Cloud側の設定  
+[Projects & workspaces] > [New] > [Workspace]を選択する。  
+[1. Choose Type]ページにて、[Version control workflow]を選択する
+![Choose Type](./images/GettingStarted_TerraformCloud-GoogleChrome_2023_07_10_1_37_53.png)
+[2. Connect to VCS]ページにて、[Github.com\(Custom\)]を選択する
+![Connect to VCS](./images/iwaset-org_TerraformCloud-GoogleChrome_2023_07_10_1_42_46.png)
+[Set up provider]ページにて、表示された下記情報を控える
+![Setup provider](./images/iwaset-org_TerraformCloud-GoogleChrome_2023_07_10_1_42_53.png)
+> - Application name
+> - Homepage URL
+> - Authorization callback URL  
 
-※既に有効なTokenを発行している場合、本手順をスキップして「1.2. Workspace設定」へ進む
 
-- ブラウザで下記にアクセスし、[Continue with HCP account]をクリックして、SSO(githubアカウント)でサインインする  
-※Terraform Cloud用に新規アカウント作成は不要
+- VCS側(Github)の設定  
+VCS(ここではGithub)にサインインし、[Settings] > [Developer settings] > [OAuth Apps]の[Register a new application]を選択する
+![OAuth Apps](./images/GitHub-GoogleChrome_2023_07_10_1_44_56.png)
+上記で控えた情報をペーストし、[Register application]を選択
+![Register New OAuth app](./images/GitHub-GoogleChrome_2023_07_10_1_45_48.png)
+発行されたClient IDと、Client secretを控える
+![OAuth App Keys](./images/GitHub-GoogleChrome_2023_07_10_1_46_50.png)
+
+- Terraform Cloud側の設定(再び)  
+Terraform Cloudの[Set up provider]ブラウザページにて、Nameに任意の値を入力し、上記で控えたClient IDとClient secretを入力して[Connect and continue]を選択
+![Input Client Creds](./images/GitHub-GoogleChrome_2023_07_10_1_47_34.png)
+認証を許可する(Authorizeをクリック)
+![Authorize Terraform Cloud](./images/GitHub-GoogleChrome_2023_07_10_1_47_42.png)
+[3. Set up SSH keypair]ページにて、optionalであるため、ここの設定はスキップする
+![Setup SSH key](./images/GitHub-GoogleChrome_2023_07_10_1_48_32.png)
+
+### 1.2. Workspace設定
+対象のWorkspaceを選択し、[Settings] > [General] > [Exection Mode]をRemoteにし、[Terraform Working Directory]に対象のディレクトリを入力し、[Save settings]を選択  
+※ここでは、[lab-practive-06]をWorking Directoryに設定  
+![Exection Mode](./images/WebCapture_7-8-2023_02143_app.terraform.io.jpeg)
+
+### 1.3. Variables設定
+対象のWorkspaceを選択し、[Variables] > [Workspace variables]から[\+ Add variable]を選択し、AWSアカウントのIAMクレデンシャル情報を下記の通りに入力して[Add variable]を押下  
+※Sensitiveのチェックボックスを選択し、Descriptionは必要に応じて記入する
+
+|Key|Value|variable category|
+|--|--|--|
+|AWS_ACCESS_KEY_ID|AKIAXXXXXXXXX|Environment variable|
+|AWS_SECRET_ACCESS_KEY|XXXXXXXXXXXX|Environment variable|
+
+
+![Variables](./images/WebCapture_7-8-2023_11728_app.terraform.io.jpeg)
+
+
+## 2. Policy定義ファイル準備
+### 2.1. Sentinel Mock Data取得
+対象Workspaceを選択し、[Actions] > [Start new run]を選択する
+
+![Start new run](./images/WebCapture_7-8-2023_12025_app.terraform.io.jpg)
+[run type]を[Plan only]にし、[Terraform version]は[Default (1.5.2)]として[Start run]を押下　　
+![Plan Result](./images/WebCapture_7-8-2023_12135_app.terraform.io.jpeg)
+Plan finishedと出力されていれば、デバッグ完了  
+[Download Sentinel mocks]を選択し、ローカル環境にMock Dataをダウンロードする (gitpodのworkspace上にMock Dataをアップロードする)  
+ダウンロードしたtgzファイル解凍後、下記ファイル以外は使用しないため、別ディレクトリ等に退避しておく
+- sentinel.hcl
+- mock-tfplan-v2.sentinel
+
+### 2.2. Policy定義ファイルの作成
+上記でダウンロードしたディレクトリと同じ階層に、下記内容の[restrict-aws-instance-tag.sentinel](./policies/restrict-aws-instance-tag.sentinel)を作成する
 ```
-https://app.terraform.io/
+import "tfplan/v2" as tfplan
+
+# Get AWS instance from modules
+ec2_instance = filter tfplan.resource_changes as _, rc {
+  rc.type is "aws_instance" and
+    (rc.change.actions contains "create" or rc.change.actions is ["update"])
+}
+
+# Mandatory Instance Tags
+mandatory_tags = [ "Managed" ]
+
+# Rule to enforce "Managed" tags on all instances
+mandatory_instance_tags = rule {
+  all ec2_instance as _, instance {
+    all mandatory_tags as mt {
+      instance.change.after.tags contains mt
+    }
+  }
+}
+
+# Main rule that requires other rules to be true
+main = rule {
+  (mandatory_instance_tags) else true
+}
+
+# https://github.com/hashicorp/learn-sentinel-write-policy
+```
+※mock-tfplan-v2.sentinelに記載されているリソースblock名が正しいことを確認しておく  
+※例\) resource_changesブロックの中に、aws_instanceが存在していること
+
+### 2.3. Mock Data修正
+2.1節でダウンロードしたsentinel.hclファイルを[下記内容](./policies/sentinel.hcl)に修正する
+```
+policy "restrict-aws-instance-tag" {
+  source = "./restrict-aws-instance-tag.sentinel"
+  enforcement_level = "hard-mandatory"
+}
+mock "tfplan/v2" {
+  module {
+    source = "mock-tfplan-v2.sentinel"
+  }
+}
 ```
 
-- [Settings] > [API tokens] > [User tokens]の[user settings page]を選択する
-![API Tokens](./images/WebCapture_30-7-2023_164755_app.terraform.io.jpeg)
+### 2.4. Policyの検証
+下記ファイルが配置されているディレクトリにて、次のコマンドを実行する
+- sentinel.hcl
+- mock-tfplan-v2.sentinel
+- restrict-aws-instance-tag.sentinel
 
-- [Create an API token]を選択する
-![Tokens](./images/WebCapture_30-7-2023_16487_app.terraform.io.jpeg)
-
-- [Description]と[Expiration]に任意の値を入力して[Generate token]を選択する
-![Create an Token](./images/WebCapture_30-7-2023_164822_app.terraform.io.jpeg)
-
-- 生成されたTokenの値を控えておく
-![Created the Token](./images/WebCapture_30-7-2023_164835_app.terraform.io.jpeg)
-
-
-### 1.2. Workspace新規作成
-※VCSを利用する場合、本手順をスキップしてlab-practice-05bの[1.1節](../lab-practice-05b/README.md)を実施し、下記の「1.3. Workspace設定」へ進む  
-
-- [Projects & workspaces] > [New] > [Workspace]を選択する。 
-- [1. Choose Type]ページにて、[CLI-driven workflow]を選択する
-![Choose Type](../lab-practice-05b/images/GettingStarted_TerraformCloud-GoogleChrome_2023_07_10_1_37_53.png) 
-
-- [2. Configure settings]ページにて、Workspace名を入力し、[Create workspace]を押下
-![Configure settings](./images/WebCapture_14-8-2023_144355_app.terraform.io.jpeg)
-
-### 1.3. Workspace設定
-- 対象のWorkspaceを選択し、[Settings] > [General] > [Exection Mode]をLocalにして、[Save settings]を選択  
-![Exection Mode](./images/WebCapture_6-8-2023_151139_app.terraform.io.jpeg)
-
-
-## 2. terraform実行
-### 2.1. Terraform Cloudでログイン  
-
-- ターミナルにて、下記コマンド実行する  
-(実行コマンド)
 ```bash
-terraform login
+sentinel apply restrict-aws-instance-tag.sentinel
 ```
-下記が出力される
+下記が出力されることを確認する
 ```
-Terraform will request an API token for app.terraform.io using your browser.
-
-If login is successful, Terraform will store the token in plain text in
-the following file for use by subsequent commands:
-    /home/gitpod/.terraform.d/credentials.tfrc.json
-
-Do you want to proceed?
-  Only 'yes' will be accepted to confirm.
-
-  Enter a value: 
+Pass - restrict-aws-instance-tag.sentinel
 ```
+## 3. Policy Set作成
+### 3.1. Policy Set作成
+TerraformCloudにサインインし、[Organization Settings] > [Policy sets] > [Connect a new policy set]を選択
+![Create a New Policy](./images/WebCap_9-9-2023_17537_app.terraform.io.jpeg)
 
-yesと入力してエンターを押す
-```
-Enter a value: yes
+Free Planでは、VCSのリモートリポジトリ配下にあるsentinelファイルを読み込めないため、ここでは[No VCS connection]を選択する
+![No VCS connection](./images/WebCap_9-9-2023_175333_app.terraform.io.jpeg)
 
-
----------------------------------------------------------------------------------
-
-Terraform must now open a web browser to the tokens page for app.terraform.io.
-
-If a browser does not open this automatically, open the following URL to proceed:
-    https://app.terraform.io/app/settings/tokens?source=terraform-login
+下表の情報を入力し、[Connect policy set]を選択  
 
 
----------------------------------------------------------------------------------
-
-Generate a token using your browser, and copy-paste it into this prompt.
-
-Terraform will store the token in plain text in the following file
-for use by subsequent commands:
-    /home/gitpod/.terraform.d/credentials.tfrc.json
-
-Token for app.terraform.io:
-  Enter a value: 
-```
-
-- 先ほど控えたAPI Token値を貼り付けてエンターを押下  
-```
-Token for app.terraform.io:
-  Enter a value: 
+|入力項目|設定値 (記入例)|
+|--|--|
+|Policy framework|Sentinel|
+|Name|任意の値 (labs-terraform-sentinel)|
+|Scope of policies|Policies enforced on selected projects and workspaces|
+|Projects|Default Project|
+|Workspaces|上記手順で作成したWorkspace名 (labs-terraform)|
+![Configure settings](./images/WebCap_9-9-2023_175444_app.terraform.io.jpeg)
 
 
-Retrieved token for user <ユーザ名>
+### 3.2. Policy作成
+[Organization Settings] > [Policies] > [Create a new policy]を選択
+![](./images/WebCap_9-9-2023_17553_app.terraform.io.jpeg)
 
+下表の情報を入力し、[Create policy]を選択  
 
----------------------------------------------------------------------------------
+|入力項目|設定値 (記入例)|
+|--|--|
+|Policy framework|Sentinel|
+|Name|任意の値 (restrict-aws-instance-tag)|
+|Enforcement behavior|Hard mandatory|
+|Policy code| (2.2節で作成したsentinelファイルの中身をコピペ)|
+|Policy Sets|上記3.3節で作成したPolicy Set名 (labs-terraform-sentinel)|
+![Configure settings](./images/WebCap_9-9-2023_175444_app.terraform.io.jpeg)
 
-                                          -                                
-                                          -----                           -
-                                          ---------                      --
-                                          ---------  -                -----
-                                           ---------  ------        -------
-                                             -------  ---------  ----------
-                                                ----  ---------- ----------
-                                                  --  ---------- ----------
-   Welcome to Terraform Cloud!                     -  ---------- -------
-                                                      ---  ----- ---
-   Documentation: terraform.io/docs/cloud             --------   -
-                                                      ----------
-                                                      ----------
-                                                       ---------
-                                                           -----
-                                                               -
+## 4. terraform cloudからEC2デプロイ
+### 4.1. 適用
+対象Workspaceを選択し、[Actions] > [Start new run]を選択する  
+[run type]を[Plan and apply]にし[Start run]を押下　　
+![Plan and apply](./images/WebCapture_13-8-2023_213140_app.terraform.io.jpeg)
 
-
-   New to TFC? Follow these steps to instantly apply an example configuration:
-
-   $ git clone https://github.com/hashicorp/tfc-getting-started.git
-   $ cd tfc-getting-started
-   $ scripts/setup.sh
-   ```
-
-terraform cloudによるログインが完了となる
-
-### 2.2. Provider設定
-
-providerファイルを開き、cloud blockに、terraform cloudのorganization名と、workspace名を設定する  
-[provider.tf](./provider.tf) (8-14行目)
-
-### 2.3. 初期化
-
-- terraformを初期化する  
-(実行コマンド)
-```bash
-terraform init
-```
-下記が出力されればok  
-```bash
-Initializing Terraform Cloud...
-Initializing modules...
-
-Initializing provider plugins...
-- Finding latest version of hashicorp/local...
-- Finding latest version of hashicorp/tls...
-- Finding hashicorp/aws versions matching "4.65.0"...
-- Finding latest version of hashicorp/template...
-- Installing hashicorp/local v2.4.0...
-- Installed hashicorp/local v2.4.0 (signed by HashiCorp)
-- Installing hashicorp/tls v4.0.4...
-- Installed hashicorp/tls v4.0.4 (signed by HashiCorp)
-- Installing hashicorp/aws v4.65.0...
-- Installed hashicorp/aws v4.65.0 (signed by HashiCorp)
-- Installing hashicorp/template v2.2.0...
-- Installed hashicorp/template v2.2.0 (signed by HashiCorp)
-
-Terraform has created a lock file .terraform.lock.hcl to record the provider
-selections it made above. Include this file in your version control repository
-so that Terraform can guarantee to make the same selections by default when
-you run "terraform init" in the future.
-
-Terraform Cloud has been successfully initialized!
-
-You may now begin working with Terraform Cloud. Try running "terraform plan" to
-see any changes that are required for your infrastructure.
-
-If you ever set or change modules or Terraform Settings, run "terraform init"
-again to reinitialize your working directory.
-```
-
-### 2.4. デバッグ
-
-(実行コマンド)
-```bash
-terraform plan -target=module.create_vpcs
-```
-
-下記が出力されることを確認
-```
-Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
-  + create
-
-Terraform will perform the following actions:
-
-...(中略)
- Warning: Resource targeting is in effect
-│ 
-│ You are creating a plan with the -target option, which means that the result of this plan may not represent all of the changes requested by the current configuration.
-│ 
-│ The -target option is not for routine use, and is provided only for exceptional situations such as recovering from errors or mistakes, or when Terraform specifically suggests to use it as part of an error message.
-╵
-
-─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-
-Note: You didn't use the -out option to save this plan, so Terraform can't guarantee to take exactly these actions if you run "terraform apply" now.
-```
-
-### 2.5. 適用
-
-(実行コマンド)
-```bash
-terraform apply -target=module.create_vpcs
-```
-
-下記が出力される
-
-```
-...(中略)
-Do you want to perform these actions?
-  Terraform will perform the actions described above.
-  Only 'yes' will be accepted to approve.
-
-  Enter a value: 
-```
-
-yesと入力してエンター押す
-
-```
-  Enter a value: yes
-
-│ Warning: Applied changes may be incomplete
-│ 
-│ The plan was created with the -target option in effect, so some changes requested in the configuration may have been ignored and the output values may not be fully updated. Run the following command to verify that
-│ no other changes are pending:
-│     terraform plan
-│ 
-│ Note that the -target option is not suitable for routine use, and is provided only for exceptional situations such as recovering from errors or mistakes, or when Terraform specifically suggests to use it as part of
-│ an error message.
-╵
-
-Apply complete! Resources: 3 added, 0 changed, 0 destroyed.
-
-Outputs:
-
-(以下略...)
-```
-
-続いて、-targetオプションをcreate_keypair, create_instanceに変えて、手順2.4~2.5を繰り返し実行する
+インスタンスに「Managed」タグが無いというエラーが出力されることを確認する
+![Applyed policy](./images/WebCap_9-9-2023_183413_app.terraform.io.jpeg)
