@@ -1,0 +1,26 @@
+import "tfplan/v2" as tfplan
+
+# Get AWS instance from modules
+ec2_instance = filter tfplan.resource_changes as _, rc {
+  rc.type is "aws_instance" and
+    (rc.change.actions contains "create" or rc.change.actions is ["update"])
+}
+
+# Mandatory Instance Tags
+mandatory_tags = [ "Managed" ]
+
+# Rule to enforce "Managed" tags on all instances
+mandatory_instance_tags = rule {
+  all ec2_instance as _, instance {
+    all mandatory_tags as mt {
+      instance.change.after.tags contains mt
+    }
+  }
+}
+
+# Main rule that requires other rules to be true
+main = rule {
+  (mandatory_instance_tags) else true
+}
+
+# https://github.com/hashicorp/learn-sentinel-write-policy
