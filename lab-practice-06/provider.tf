@@ -15,5 +15,6 @@ terraform {
 }
 # Configure the AWS Provider
 provider "aws" {
-  region     = "ap-northeast-1"
+  shared_config_files = [var.tfc_aws_dynamic_credentials.default.shared_config_file]
+  region              = "ap-northeast-1"
 }
