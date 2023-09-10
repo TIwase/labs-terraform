@@ -169,6 +169,7 @@ Free Planでは、VCSのリモートリポジトリ配下にあるsentinelファ
 |Scope of policies|Policies enforced on selected projects and workspaces|
 |Projects|Default Project|
 |Workspaces|上記手順で作成したWorkspace名 (labs-terraform)|
+
 ![Configure settings](./images/WebCap_9-9-2023_175444_app.terraform.io.jpeg)
 
 
@@ -185,6 +186,7 @@ Free Planでは、VCSのリモートリポジトリ配下にあるsentinelファ
 |Enforcement behavior|Hard mandatory|
 |Policy code| (2.2節で作成したsentinelファイルの中身をコピペ)|
 |Policy Sets|上記3.3節で作成したPolicy Set名 (labs-terraform-sentinel)|
+
 ![Configure settings](./images/WebCap_9-9-2023_175444_app.terraform.io.jpeg)
 
 ## 4. terraform cloudからEC2デプロイ
