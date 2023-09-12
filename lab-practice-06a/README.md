@@ -187,7 +187,7 @@ Free Planでは、VCSのリモートリポジトリ配下にあるsentinelファ
 |Policy code| (2.2節で作成したsentinelファイルの中身をコピペ)|
 |Policy Sets|上記3.3節で作成したPolicy Set名 (labs-terraform-sentinel)|
 
-![Configure settings](./images/WebCap_9-9-2023_175444_app.terraform.io.jpeg)
+![Configure settings](./images/WebCap_9-9-2023_17569_app.terraform.io.jpeg)
 
 ## 4. terraform cloudからEC2デプロイ
 ### 4.1. 適用
