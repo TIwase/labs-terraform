@@ -9,7 +9,7 @@ terraform {
     organization = "iwaset-org"
 
     workspaces {
-      name = "labs-terraform"
+      name = "ady19-labs-terraform"
     }
   }
 }

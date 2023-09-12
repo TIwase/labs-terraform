@@ -65,11 +65,31 @@ https://app.terraform.io/
 ## 2. terraform実行
 ### 2.1. Terraform Cloudでログイン  
 
-- ターミナルにて、下記コマンド実行する  
+- 作業ディレクトリへ移動する  
+(実行コマンド)
+```bash
+cd ./lab-practice-06c; pwd; ls -l
+```
+(出力例)
+```
+/workspace/labs-terraform/lab-practice-06c
+total 36
+drwxr-xr-x 2 gitpod gitpod  4096 Sep 12 15:06 images
+-rw-r--r-- 1 gitpod gitpod  1119 Sep 12 15:06 main.tf
+drwxr-xr-x 5 gitpod gitpod    74 Sep 12 15:06 modules
+-rw-r--r-- 1 gitpod gitpod   348 Sep 12 15:06 outputs.tf
+-rw-r--r-- 1 gitpod gitpod   298 Sep 12 15:06 provider.tf
+-rw-r--r-- 1 gitpod gitpod 10114 Sep 12 15:09 README.md
+-rw-r--r-- 1 gitpod gitpod   374 Sep 12 15:06 terraform.tfvars
+-rw-r--r-- 1 gitpod gitpod   352 Sep 12 15:06 variables.tf
+```
+
+- terraform cloudへログインする  
 (実行コマンド)
 ```bash
 terraform login
 ```
+
 下記が出力される
 ```
 Terraform will request an API token for app.terraform.io using your browser.
@@ -109,7 +129,7 @@ Token for app.terraform.io:
   Enter a value: 
 ```
 
-- 先ほど控えたAPI Token値を貼り付けてエンターを押下  
+先ほど控えたAPI Token値を貼り付けてエンターを押下  
 ```
 Token for app.terraform.io:
   Enter a value: 
